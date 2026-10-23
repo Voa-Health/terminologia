@@ -1,0 +1,46 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "health.voa/terminologia",
+  "title": "terminologia",
+  "description": "Cliente MCP para consultar terminologias de saúde da Voa.",
+  "version": "0.1.0a1",
+  "websiteUrl": "https://docs.voa.health/integracao/terminologia",
+  "repository": {
+    "url": "https://github.com/Voa-Health/terminologia",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "terminologia",
+      "version": "0.1.0a1",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "runtimeArguments": [
+        {
+          "type": "named",
+          "name": "--with",
+          "value": "terminologia[mcp]==0.1.0a1",
+          "description": "Instala o extra mcp na mesma versão."
+        }
+      ],
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "TERMINOLOGIA_KEY",
+          "description": "Chave de produto da organização (sk_voa_) com escopo terminology:read.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
