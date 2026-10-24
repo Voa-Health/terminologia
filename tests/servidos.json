@@ -1,0 +1,66 @@
+[
+  {
+    "system": "http://hl7.org/fhir/sid/icd-10",
+    "value_set": "https://voa.health/fhir/ValueSet/cid10-br"
+  },
+  {
+    "system": "http://hl7.org/fhir/sid/icpc-2",
+    "value_set": "https://voa.health/fhir/ValueSet/ciap2-br"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tuss",
+    "value_set": "https://voa.health/fhir/ValueSet/tuss-tabela-22"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tuss-diarias-taxas-gases-medicinais",
+    "value_set": "https://voa.health/fhir/ValueSet/tuss-diarias-taxas-gases-medicinais"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tuss-materiais-opme",
+    "value_set": "https://voa.health/fhir/ValueSet/tuss-materiais-opme"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tuss-medicamentos",
+    "value_set": "https://voa.health/fhir/ValueSet/tuss-medicamentos"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap"
+  },
+  {
+    "system": "urn:voa:anvisa:registro",
+    "value_set": null
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/cbo",
+    "value_set": "https://voa.health/fhir/ValueSet/cbo"
+  },
+  {
+    "system": "http://loinc.org",
+    "value_set": "http://loinc.org/vs"
+  },
+  {
+    "system": "http://unitsofmeasure.org",
+    "value_set": "https://voa.health/fhir/ValueSet/voa-unidades-de-medida"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-atendimento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-consulta",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-consulta"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-unidade-medida",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-unidade-medida"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-regime-atendimento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-regime-atendimento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/voa-categoria-servico",
+    "value_set": "https://voa.health/fhir/ValueSet/voa-categoria-servico"
+  }
+]
