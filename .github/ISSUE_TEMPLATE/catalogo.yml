@@ -1,0 +1,33 @@
+name: Sugerir uma correção de catálogo
+description: Registre uma correção baseada em uma fonte pública.
+title: "[Catálogo]: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: Não inclua dados pessoais ou informações de saúde identificáveis.
+  - type: input
+    id: system
+    attributes:
+      label: Sistema de códigos
+    validations:
+      required: true
+  - type: input
+    id: code
+    attributes:
+      label: Código
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Correção sugerida
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: URL da fonte pública
+      placeholder: https://
+    validations:
+      required: true

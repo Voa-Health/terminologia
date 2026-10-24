@@ -1,19 +1,46 @@
+# Python
 .venv/
 venv/
-uv.lock
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
 .dmypy.json
 .ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+.eggs/
+.ipynb_checkpoints/
+.pyre/
+.pytype/
+__pypackages__/
+.pdm-python
+
+# Build e cobertura
 dist/
 build/
+*.egg
 *.egg-info/
+wheels/
+pip-wheel-metadata/
 .coverage
 .coverage.*
+*.cover
 coverage.xml
 htmlcov/
+nosetests.xml
+profile_default/
+
+# Cache e ferramentas
+.cache/
+.direnv/
+.envrc
+.claude/settings.local.json
+.aws/
+.vercel/
+
+# Segredos e certificados
 .env*
 !.env.example
 *.pem
@@ -22,6 +49,8 @@ htmlcov/
 *.pfx
 *.jks
 gitleaks-report*.json
+
+# Sistema e editores
 .DS_Store
 Thumbs.db
 .idea/

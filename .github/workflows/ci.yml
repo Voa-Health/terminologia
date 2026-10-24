@@ -2,9 +2,14 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
 
 permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   lint:
@@ -16,7 +21,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-      - run: uv sync --all-extras --group dev
+      - run: uv sync --locked --all-extras --group dev
       - run: uv run ruff check .
       - run: uv run ruff format --check .
 
@@ -29,7 +34,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-      - run: uv sync --all-extras --group dev
+      - run: uv sync --locked --all-extras --group dev
       - run: uv run mypy src
 
   test:
@@ -50,7 +55,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-      - run: uv sync --all-extras --group dev
+      - run: uv sync --locked --all-extras --group dev
       - run: uv run pytest
 
   build:
