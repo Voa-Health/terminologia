@@ -92,12 +92,15 @@ class Sistema:
 
 _TABELAS_TISS: dict[str, tuple[str, str]] = {
     "23": ("carater-atendimento", "caráter do atendimento"),
-    "25": ("codigo-despesa", "código de despesa"),
+    "25": ("codigo-despesa", "código da despesa"),
     "26": ("conselho-profissional", "conselho profissional"),
     "27": ("debitos-creditos", "débitos e créditos"),
     "28": ("dentes", "dentes"),
     "29": ("diagnostico-imagem", "diagnóstico por imagem"),
-    "30": ("escala-capacidade-funcional", "escala de capacidade funcional"),
+    "30": (
+        "escala-capacidade-funcional",
+        "escala de capacidade funcional (ECOG - escala de Zubrod)",
+    ),
     "31": ("estadiamento-tumor", "estadiamento do tumor"),
     "32": ("faces-dente", "faces do dente"),
     "33": ("finalidade-tratamento", "finalidade do tratamento"),
@@ -105,7 +108,7 @@ _TABELAS_TISS: dict[str, tuple[str, str]] = {
     "35": ("grau-participacao", "grau de participação"),
     "36": ("indicador-acidente", "indicador de acidente"),
     "37": ("indicador-debito-credito", "indicador de débito ou crédito"),
-    "38": ("mensagens", "mensagens"),
+    "38": ("mensagens", "mensagens (glosas, negativas e outras)"),
     "39": ("motivo-encerramento", "motivo de encerramento"),
     "40": ("origem-guia", "origem da guia"),
     "41": ("regime-internacao", "regime de internação"),
@@ -138,14 +141,14 @@ _TABELAS_TISS: dict[str, tuple[str, str]] = {
     "66": ("nodulo", "nódulo"),
     "67": ("tumor", "tumor"),
     "68": ("categoria-despesa", "categoria de despesa"),
-    "69": ("versao-componente-comunicacao", "versão do componente de comunicação"),
-    "70": ("forma-envio", "forma de envio"),
+    "69": ("versao-componente-comunicacao", "versão do componente de comunicação do padrão"),
+    "70": ("forma-envio", "forma de envio do padrão"),
     "71": (
         "tipo-atendimento-operadora-intermediaria",
         "tipo de atendimento por operadora intermediária",
     ),
     "72": ("tipo-identificacao-beneficiario", "tipo de identificação do beneficiário"),
-    "73": ("etapas-autorizacao", "etapas da autorização"),
+    "73": ("etapas-autorizacao", "etapas de autorização"),
     "74": ("motivos-ausencia-codigo-validacao", "motivos de ausência do código de validação"),
     "75": ("cobertura-especial", "cobertura especial"),
     "76": ("regime-atendimento", "regime de atendimento"),
@@ -156,9 +159,9 @@ _TABELAS_TISS: dict[str, tuple[str, str]] = {
         "modelos de remuneração entre operadoras e prestadores",
     ),
     "80": ("formato-documento", "formato do documento"),
-    "81": ("tipo-documento", "tipo de documento"),
+    "81": ("tipo-documento", "tipo do documento"),
     "82": ("centro-consumo", "centro de consumo"),
-    "87": ("terminologias-unificadas", "terminologias unificadas"),
+    "87": ("terminologias-unificadas", "relação das terminologias unificadas na saúde suplementar"),
 }
 
 _TISS = tuple(
