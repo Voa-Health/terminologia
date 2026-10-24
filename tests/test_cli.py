@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 
+import terminologia
 import terminologia._cliente as cliente_modulo
 from terminologia import Terminologia
 from terminologia.__main__ import main
@@ -78,3 +79,38 @@ def test_cli_exit_codes_e_erros(servidor, capsys):
         assert "https://tiss-api.voa.health/org" in capsys.readouterr().err
     finally:
         cliente_modulo._reset_padrao()
+
+
+def test_cli_traduzir_exige_para_sem_request(servidor, capsys):
+    previous = cliente_modulo._CACHE_PADRAO["cliente"]
+    cliente_modulo._CACHE_PADRAO["cliente"] = Terminologia(
+        api_key="sk_voa_teste",
+        base_url=servidor.url,
+    )
+    try:
+        assert main(["traduzir", "cid10", "I20"]) == 2
+        assert "--para SISTEMA" in capsys.readouterr().err
+        assert servidor.requisicoes == []
+    finally:
+        cliente_modulo._CACHE_PADRAO["cliente"] = previous
+
+
+def test_cli_traduzir_normaliza_cid10_e_envia_targetsystem(servidor):
+    servidor.respostas["ConceptMap/$translate"] = {
+        "corpo": {
+            "resourceType": "Parameters",
+            "parameter": [{"name": "result", "valueBoolean": True}],
+        }
+    }
+    previous = cliente_modulo._CACHE_PADRAO["cliente"]
+    cliente_modulo._CACHE_PADRAO["cliente"] = Terminologia(
+        api_key="sk_voa_teste",
+        base_url=servidor.url,
+    )
+    try:
+        assert main(["traduzir", "cid10", " I20.0 ", "--para", "ciap2"]) == 0
+        query = servidor.requisicoes[0]["query"]
+        assert query["code"] == ["I200"]
+        assert query["targetsystem"] == [terminologia.ciap2.system]
+    finally:
+        cliente_modulo._CACHE_PADRAO["cliente"] = previous

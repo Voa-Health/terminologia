@@ -59,6 +59,11 @@ def _configurar(servidor: Any, path: str, body: dict[str, Any]) -> None:
             {"system": "urn:example", "code": "x"},
         ),
         (
+            lambda client: client.translate("urn:example", "x", target_system="urn:target"),
+            "ConceptMap/$translate",
+            {"system": "urn:example", "code": "x", "targetsystem": "urn:target"},
+        ),
+        (
             lambda client: client.subsumes("urn:example", "a", "b"),
             "CodeSystem/$subsumes",
             {"system": "urn:example", "codeA": "a", "codeB": "b"},
@@ -77,10 +82,54 @@ def test_metodos_crus_montam_consulta(cliente, servidor, call, path, query):
     assert request["path"] == f"/{path}"
     assert request["query"] == {key: [value] for key, value in query.items()}
     assert request["headers"]["Authorization"] == "Bearer sk_voa_teste"
-    assert request["headers"]["Accept"] == "application/fhir+json"
+    assert request["headers"]["Accept"] == "application/fhir+json, application/json;q=0.9"
     assert request["headers"]["User-Agent"] == f"terminologia/{terminologia.__version__}"
     assert request["headers"]["X-Client"] == f"terminologia/{terminologia.__version__}"
     assert "semantic" not in request["query"]
+
+
+def test_url_base_respeita_argumento_ambiente_e_padrao(monkeypatch):
+    monkeypatch.delenv("TERMINOLOGIA_URL", raising=False)
+    assert Terminologia().base_url == "https://terminologia.voa.health/api/v1/fhir"
+
+    monkeypatch.setenv("TERMINOLOGIA_URL", "https://env.example/fhir/")
+    assert Terminologia().base_url == "https://env.example/fhir"
+    assert Terminologia(base_url="https://arg.example/fhir/").base_url == "https://arg.example/fhir"
+
+
+def test_cid10_normaliza_pontos_e_espacos(servidor):
+    _configurar(
+        servidor,
+        "CodeSystem/$lookup",
+        {
+            "resourceType": "Parameters",
+            "parameter": [
+                {"name": "system", "valueUri": terminologia.cid10.system},
+                {"name": "code", "valueCode": "I200"},
+                {"name": "display", "valueString": "Angina instável sintética"},
+            ],
+        },
+    )
+    _configurar(
+        servidor,
+        "ValueSet/$validate-code",
+        {
+            "resourceType": "Parameters",
+            "parameter": [
+                {"name": "result", "valueBoolean": True},
+                {"name": "code", "valueCode": "I200"},
+                {"name": "system", "valueUri": terminologia.cid10.system},
+            ],
+        },
+    )
+    sistema_cid10 = terminologia.cid10.com(
+        Terminologia(api_key="sk_voa_teste", base_url=servidor.url)
+    )
+
+    assert sistema_cid10.lookup(" I20.0 ").code == "I200"
+    assert sistema_cid10.validar(" I20.0 ").valido
+    assert servidor.requisicoes[0]["query"]["code"] == ["I200"]
+    assert servidor.requisicoes[1]["query"]["code"] == ["I200"]
 
 
 @pytest.mark.parametrize(

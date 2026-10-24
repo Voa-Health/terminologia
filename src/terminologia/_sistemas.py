@@ -63,7 +63,7 @@ class Sistema:
 
         cliente = self._resolver_cliente()
         try:
-            payload = cliente.lookup(self.system, codigo)
+            payload = cliente.lookup(self.system, self._normalizar_codigo(codigo))
         except TerminologiaError as exc:
             if exc.status == 404 and exc.codigo == "not-found":
                 return None
@@ -75,6 +75,7 @@ class Sistema:
         from ._cliente import _validacao_parameters
 
         cliente = self._resolver_cliente()
+        codigo = self._normalizar_codigo(codigo)
         if self.value_set is not None:
             payload = cliente.validate_code(
                 codigo,
@@ -84,6 +85,11 @@ class Sistema:
         else:
             payload = cliente.validate_code(codigo, system=self.system)
         return _validacao_parameters(payload)
+
+    def _normalizar_codigo(self, codigo: str) -> str:
+        if self.nome == "cid10":
+            return codigo.strip().replace(".", "")
+        return codigo
 
 
 SISTEMAS: tuple[Sistema, ...] = (

@@ -25,6 +25,7 @@ from ._sistemas import Sistema
 _CACHE_MAXIMO = 256
 _CACHE_PADRAO: dict[str, Terminologia | None] = {"cliente": None}
 _CACHE_LOCK = threading.Lock()
+_URL_PADRAO = "https://terminologia.voa.health/api/v1/fhir"
 
 
 class Terminologia:
@@ -37,11 +38,14 @@ class Terminologia:
     def __init__(
         self,
         api_key: str | None = None,
-        base_url: str = "https://api.voa.health/api/v1/fhir",
+        base_url: str | None = None,
         timeout: float = 10.0,
     ) -> None:
         self.api_key = api_key
-        self.base_url = base_url.rstrip("/")
+        resolved_url = (
+            base_url if base_url is not None else os.environ.get("TERMINOLOGIA_URL") or _URL_PADRAO
+        )
+        self.base_url = resolved_url.rstrip("/")
         self.timeout = timeout
         self._cache: OrderedDict[str, dict[str, Any]] = OrderedDict()
         self._lock = threading.RLock()
@@ -69,7 +73,7 @@ class Terminologia:
             url,
             headers={
                 "Authorization": f"Bearer {self._chave()}",
-                "Accept": "application/fhir+json",
+                "Accept": "application/fhir+json, application/json;q=0.9",
                 "User-Agent": f"terminologia/{__version__}",
                 "X-Client": f"terminologia/{__version__}",
             },
