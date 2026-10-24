@@ -3,13 +3,13 @@ from __future__ import annotations
 import json
 
 import terminologia._cliente as cliente_modulo
-from terminologia import Terminologia
+from terminologia import SISTEMAS, Terminologia
 from terminologia.__main__ import main
 
 
 def test_cli_sistemas_json(capsys):
     assert main(["sistemas", "--json"]) == 0
-    assert len(json.loads(capsys.readouterr().out)) == 16
+    assert len(json.loads(capsys.readouterr().out)) == len(SISTEMAS)
 
 
 def test_cli_busca_e_json(servidor, capsys):
@@ -68,6 +68,8 @@ def test_cli_exit_codes_e_erros(servidor, capsys):
         assert "inválido:" in capsys.readouterr().out
         assert main(["buscar", "sistema-invalido", "x"]) == 2
         assert "Sistema desconhecido" in capsys.readouterr().err
+        assert main(["buscar", "cnes", "hospital"]) == 2
+        assert "busca textual" in capsys.readouterr().err
         assert main(["buscar", "anvisa", "x"]) == 2
         assert "search-unavailable" in capsys.readouterr().err
         servidor.respostas["ValueSet/$expand"] = {

@@ -132,6 +132,25 @@ def test_metodos_crus_montam_consulta(cliente, servidor, call, path, query):
                 "system": ["https://voa.health/fhir/CodeSystem/tiss-tipo-consulta"],
             },
         ),
+        (
+            lambda client: sistema("cnes").com(client).lookup("0000000"),
+            "/CodeSystem/$lookup",
+            {"system": ["urn:voa:br:cnes"], "code": ["0000000"]},
+        ),
+        (
+            lambda client: sistema("cnes").com(client).validar("0000000"),
+            "/CodeSystem/$validate-code",
+            {"url": ["urn:voa:br:cnes"], "code": ["0000000"]},
+        ),
+        (
+            lambda client: sistema("ans-operadora").com(client).validar("000000"),
+            "/ValueSet/$validate-code",
+            {
+                "url": ["urn:voa:br:ans-registro:todos"],
+                "code": ["000000"],
+                "system": ["urn:voa:br:ans-registro"],
+            },
+        ),
     ],
 )
 def test_atalhos_usam_sistema_e_endpoint_canonicos(servidor, call, path, query):
@@ -345,5 +364,62 @@ def test_sistemas_snapshot_e_aliases():
     assert sistema("cid10").com(Terminologia(api_key="sk_voa_teste"))._cliente is not None
     with pytest.raises(ValueError, match="Válidos"):
         sistema("inexistente")
-    with pytest.raises(ValueError, match="50, 52, 60, 76"):
-        tiss_dominio(44)
+    with pytest.raises(ValueError, match="Válidas: 23, 25"):
+        tiss_dominio(24)
+
+
+@pytest.mark.parametrize(
+    ("nome", "system", "value_set"),
+    [
+        (
+            "tiss-38",
+            "https://voa.health/fhir/CodeSystem/tiss-mensagens",
+            "https://voa.health/fhir/ValueSet/tiss-mensagens",
+        ),
+        (
+            "tiss-23",
+            "https://voa.health/fhir/CodeSystem/tiss-carater-atendimento",
+            "https://voa.health/fhir/ValueSet/tiss-carater-atendimento",
+        ),
+        ("cnes", "urn:voa:br:cnes", None),
+        ("ans-operadora", "urn:voa:br:ans-registro", "urn:voa:br:ans-registro:todos"),
+        (
+            "rol-ans",
+            "https://voa.health/fhir/CodeSystem/rol-ans",
+            "https://voa.health/fhir/ValueSet/rol-ans",
+        ),
+        (
+            "dut",
+            "https://voa.health/fhir/CodeSystem/rol-diretrizes-dut",
+            "https://voa.health/fhir/ValueSet/rol-diretrizes-dut",
+        ),
+        (
+            "cfm-especialidade",
+            "https://voa.health/fhir/CodeSystem/cfm-especialidade",
+            "https://voa.health/fhir/ValueSet/cfm-especialidades",
+        ),
+        (
+            "sigtap-sub-grupo",
+            "https://voa.health/fhir/CodeSystem/sigtap-sub-grupo",
+            "https://voa.health/fhir/ValueSet/sigtap-sub-grupo",
+        ),
+    ],
+)
+def test_sistema_resolve_nome_e_canonicos(nome, system, value_set):
+    item = sistema(nome)
+    assert (item.system, item.value_set) == (system, value_set)
+    assert sistema(system) is item
+    if value_set is not None:
+        assert sistema(value_set) is item
+
+
+def test_tiss_dominio_aceita_numero_e_texto():
+    assert tiss_dominio(38) is tiss_dominio("38") is sistema("tiss-38")
+
+
+@pytest.mark.parametrize("nome", ["cnes", "ans-operadora"])
+def test_sistema_sem_busca_textual_falha_sem_rede(servidor, nome):
+    cliente = Terminologia(api_key="sk_voa_teste", base_url=servidor.url)
+    with pytest.raises(ValueError, match="não tem busca textual"):
+        sistema(nome).com(cliente).buscar("hospital")
+    assert servidor.requisicoes == []
