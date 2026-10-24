@@ -125,13 +125,16 @@ def _validar(args: argparse.Namespace) -> int:
 def _traduzir(args: argparse.Namespace) -> int:
     from ._cliente import padrao
 
+    if not args.para:
+        raise TerminologiaError("Informe o sistema de destino com --para SISTEMA.")
+
     item = sistema(args.sistema)
-    target = sistema(args.para) if args.para else None
-    _atribuicoes(item.nome, target.nome if target is not None else "")
+    target = sistema(args.para)
+    _atribuicoes(item.nome, target.nome)
     payload = padrao().translate(
         item.system,
-        args.codigo,
-        target_system=target.system if target is not None else None,
+        item._normalizar_codigo(args.codigo),
+        target_system=target.system,
     )
     if args.json:
         _emitir_json(payload)
