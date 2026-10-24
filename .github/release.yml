@@ -1,0 +1,11 @@
+changelog:
+  categories:
+    - title: Novidades
+      labels:
+        - novidade
+    - title: Correções
+      labels:
+        - correcao
+    - title: Manutenção
+      labels:
+        - manutencao

@@ -1,0 +1,14 @@
+# terminologia
+
+Cliente Python e servidor MCP para consultar terminologias de saúde em FHIR.
+
+- Instalação: `pip install terminologia`
+- Chave: `TERMINOLOGIA_KEY`, criada em https://tiss-api.voa.health/org
+- [README](README.md)
+- [Início rápido](README.md#início-rápido)
+- [Sistemas](README.md#sistemas)
+- [Documentação](https://docs.voa.health/integracao/terminologia)
+- [tiss](https://github.com/Voa-Health/tiss)
+
+Ferramentas MCP: `terminologia_buscar`, `terminologia_lookup`,
+`terminologia_validar`, `terminologia_traduzir` e `terminologia_sistemas`.
