@@ -22,8 +22,8 @@
 
 # terminologia
 
-Cliente Python e ferramentas MCP para consultar CID-10, CIAP-2, TUSS, SIGTAP,
-ANVISA, CBO, LOINC, UCUM e outros sistemas de terminologia em FHIR.
+Cliente Python e ferramentas MCP para consultar CID-10, CIAP-2, TUSS, TISS,
+SIGTAP, CNES, ANVISA, CBO, LOINC, UCUM e outros sistemas de terminologia em FHIR.
 
 ## Início rápido
 
@@ -55,6 +55,9 @@ for conceito in resultado:
 consulta = terminologia.tuss.lookup("10101012")
 if consulta:
     print(consulta.display)
+
+for estabelecimento in terminologia.sistema("cnes").buscar("hospital das clínicas", n=5):
+    print(estabelecimento.code, estabelecimento.display)
 ```
 
 ## CLI
@@ -119,15 +122,91 @@ Cursor (`mcp.json`):
 | `tuss-materiais` | `https://voa.health/fhir/CodeSystem/tuss-materiais-opme` |
 | `tuss-medicamentos` | `https://voa.health/fhir/CodeSystem/tuss-medicamentos` |
 | `sigtap` | `https://voa.health/fhir/CodeSystem/sigtap` |
+| `sigtap-grupo` | `https://voa.health/fhir/CodeSystem/sigtap-grupo` |
+| `sigtap-sub-grupo` | `https://voa.health/fhir/CodeSystem/sigtap-sub-grupo` |
+| `sigtap-servico` | `https://voa.health/fhir/CodeSystem/sigtap-servico` |
+| `sigtap-registro` | `https://voa.health/fhir/CodeSystem/sigtap-registro` |
+| `sigtap-financiamento` | `https://voa.health/fhir/CodeSystem/sigtap-financiamento` |
+| `sigtap-modalidade` | `https://voa.health/fhir/CodeSystem/sigtap-modalidade` |
 | `anvisa` | `urn:voa:anvisa:registro` |
 | `cbo` | `https://voa.health/fhir/CodeSystem/cbo` |
+| `cfm-especialidade` | `https://voa.health/fhir/CodeSystem/cfm-especialidade` |
+| `rol-ans` | `https://voa.health/fhir/CodeSystem/rol-ans` |
+| `dut` | `https://voa.health/fhir/CodeSystem/rol-diretrizes-dut` |
+| `cnes` | `urn:voa:br:cnes` |
+| `ans-operadora` | `urn:voa:br:ans-registro` |
 | `loinc` | `http://loinc.org` |
 | `ucum` | `http://unitsofmeasure.org` |
-| `tiss-50` | `https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento` |
-| `tiss-52` | `https://voa.health/fhir/CodeSystem/tiss-tipo-consulta` |
-| `tiss-60` | `https://voa.health/fhir/CodeSystem/tiss-unidade-medida` |
-| `tiss-76` | `https://voa.health/fhir/CodeSystem/tiss-regime-atendimento` |
 | `voa-categoria` | `https://voa.health/fhir/CodeSystem/voa-categoria-servico` |
+
+<details>
+<summary>Tabelas de domínio TISS (59)</summary>
+
+Também acessíveis por `terminologia.tiss_dominio(<número>)`.
+
+| Nome | Canônico |
+|---|---|
+| `tiss-23` | `https://voa.health/fhir/CodeSystem/tiss-carater-atendimento` |
+| `tiss-25` | `https://voa.health/fhir/CodeSystem/tiss-codigo-despesa` |
+| `tiss-26` | `https://voa.health/fhir/CodeSystem/tiss-conselho-profissional` |
+| `tiss-27` | `https://voa.health/fhir/CodeSystem/tiss-debitos-creditos` |
+| `tiss-28` | `https://voa.health/fhir/CodeSystem/tiss-dentes` |
+| `tiss-29` | `https://voa.health/fhir/CodeSystem/tiss-diagnostico-imagem` |
+| `tiss-30` | `https://voa.health/fhir/CodeSystem/tiss-escala-capacidade-funcional` |
+| `tiss-31` | `https://voa.health/fhir/CodeSystem/tiss-estadiamento-tumor` |
+| `tiss-32` | `https://voa.health/fhir/CodeSystem/tiss-faces-dente` |
+| `tiss-33` | `https://voa.health/fhir/CodeSystem/tiss-finalidade-tratamento` |
+| `tiss-34` | `https://voa.health/fhir/CodeSystem/tiss-forma-pagamento` |
+| `tiss-35` | `https://voa.health/fhir/CodeSystem/tiss-grau-participacao` |
+| `tiss-36` | `https://voa.health/fhir/CodeSystem/tiss-indicador-acidente` |
+| `tiss-37` | `https://voa.health/fhir/CodeSystem/tiss-indicador-debito-credito` |
+| `tiss-38` | `https://voa.health/fhir/CodeSystem/tiss-mensagens` |
+| `tiss-39` | `https://voa.health/fhir/CodeSystem/tiss-motivo-encerramento` |
+| `tiss-40` | `https://voa.health/fhir/CodeSystem/tiss-origem-guia` |
+| `tiss-41` | `https://voa.health/fhir/CodeSystem/tiss-regime-internacao` |
+| `tiss-42` | `https://voa.health/fhir/CodeSystem/tiss-regioes-boca` |
+| `tiss-43` | `https://voa.health/fhir/CodeSystem/tiss-sexo` |
+| `tiss-44` | `https://voa.health/fhir/CodeSystem/tiss-situacao-inicial-dente` |
+| `tiss-45` | `https://voa.health/fhir/CodeSystem/tiss-status-solicitacao` |
+| `tiss-46` | `https://voa.health/fhir/CodeSystem/tiss-status-cancelamento` |
+| `tiss-47` | `https://voa.health/fhir/CodeSystem/tiss-status-protocolo` |
+| `tiss-48` | `https://voa.health/fhir/CodeSystem/tiss-tecnica-utilizada` |
+| `tiss-49` | `https://voa.health/fhir/CodeSystem/tiss-tipo-acomodacao` |
+| `tiss-50` | `https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento` |
+| `tiss-51` | `https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento-odontologia` |
+| `tiss-52` | `https://voa.health/fhir/CodeSystem/tiss-tipo-consulta` |
+| `tiss-53` | `https://voa.health/fhir/CodeSystem/tiss-tipo-demonstrativo` |
+| `tiss-54` | `https://voa.health/fhir/CodeSystem/tiss-tipo-guia` |
+| `tiss-55` | `https://voa.health/fhir/CodeSystem/tiss-tipo-faturamento` |
+| `tiss-56` | `https://voa.health/fhir/CodeSystem/tiss-natureza-guia` |
+| `tiss-57` | `https://voa.health/fhir/CodeSystem/tiss-tipo-internacao` |
+| `tiss-58` | `https://voa.health/fhir/CodeSystem/tiss-tipo-quimioterapia` |
+| `tiss-59` | `https://voa.health/fhir/CodeSystem/tiss-unidade-federacao` |
+| `tiss-60` | `https://voa.health/fhir/CodeSystem/tiss-unidade-medida` |
+| `tiss-61` | `https://voa.health/fhir/CodeSystem/tiss-via-acesso` |
+| `tiss-62` | `https://voa.health/fhir/CodeSystem/tiss-via-administracao` |
+| `tiss-63` | `https://voa.health/fhir/CodeSystem/tiss-grupos-procedimentos-ans` |
+| `tiss-65` | `https://voa.health/fhir/CodeSystem/tiss-metastases` |
+| `tiss-66` | `https://voa.health/fhir/CodeSystem/tiss-nodulo` |
+| `tiss-67` | `https://voa.health/fhir/CodeSystem/tiss-tumor` |
+| `tiss-68` | `https://voa.health/fhir/CodeSystem/tiss-categoria-despesa` |
+| `tiss-69` | `https://voa.health/fhir/CodeSystem/tiss-versao-componente-comunicacao` |
+| `tiss-70` | `https://voa.health/fhir/CodeSystem/tiss-forma-envio` |
+| `tiss-71` | `https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento-operadora-intermediaria` |
+| `tiss-72` | `https://voa.health/fhir/CodeSystem/tiss-tipo-identificacao-beneficiario` |
+| `tiss-73` | `https://voa.health/fhir/CodeSystem/tiss-etapas-autorizacao` |
+| `tiss-74` | `https://voa.health/fhir/CodeSystem/tiss-motivos-ausencia-codigo-validacao` |
+| `tiss-75` | `https://voa.health/fhir/CodeSystem/tiss-cobertura-especial` |
+| `tiss-76` | `https://voa.health/fhir/CodeSystem/tiss-regime-atendimento` |
+| `tiss-77` | `https://voa.health/fhir/CodeSystem/tiss-saude-ocupacional` |
+| `tiss-78` | `https://voa.health/fhir/CodeSystem/tiss-tipo-pagamento` |
+| `tiss-79` | `https://voa.health/fhir/CodeSystem/tiss-modelos-remuneracao` |
+| `tiss-80` | `https://voa.health/fhir/CodeSystem/tiss-formato-documento` |
+| `tiss-81` | `https://voa.health/fhir/CodeSystem/tiss-tipo-documento` |
+| `tiss-82` | `https://voa.health/fhir/CodeSystem/tiss-centro-consumo` |
+| `tiss-87` | `https://voa.health/fhir/CodeSystem/tiss-terminologias-unificadas` |
+
+</details>
 
 A allowlist de licença é definida pelo servidor.
 

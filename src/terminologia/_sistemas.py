@@ -92,6 +92,107 @@ class Sistema:
         return codigo
 
 
+_TABELAS_TISS: dict[str, tuple[str, str]] = {
+    "23": ("carater-atendimento", "caráter do atendimento"),
+    "25": ("codigo-despesa", "código da despesa"),
+    "26": ("conselho-profissional", "conselho profissional"),
+    "27": ("debitos-creditos", "débitos e créditos"),
+    "28": ("dentes", "dentes"),
+    "29": ("diagnostico-imagem", "diagnóstico por imagem"),
+    "30": (
+        "escala-capacidade-funcional",
+        "escala de capacidade funcional (ECOG - escala de Zubrod)",
+    ),
+    "31": ("estadiamento-tumor", "estadiamento do tumor"),
+    "32": ("faces-dente", "faces do dente"),
+    "33": ("finalidade-tratamento", "finalidade do tratamento"),
+    "34": ("forma-pagamento", "forma de pagamento"),
+    "35": ("grau-participacao", "grau de participação"),
+    "36": ("indicador-acidente", "indicador de acidente"),
+    "37": ("indicador-debito-credito", "indicador de débito ou crédito"),
+    "38": ("mensagens", "mensagens (glosas, negativas e outras)"),
+    "39": ("motivo-encerramento", "motivo de encerramento"),
+    "40": ("origem-guia", "origem da guia"),
+    "41": ("regime-internacao", "regime de internação"),
+    "42": ("regioes-boca", "regiões da boca"),
+    "43": ("sexo", "sexo"),
+    "44": ("situacao-inicial-dente", "situação inicial do dente"),
+    "45": ("status-solicitacao", "status da solicitação"),
+    "46": ("status-cancelamento", "status do cancelamento"),
+    "47": ("status-protocolo", "status do protocolo"),
+    "48": ("tecnica-utilizada", "técnica utilizada"),
+    "49": ("tipo-acomodacao", "tipo de acomodação"),
+    "50": ("tipo-atendimento", "tipo de atendimento"),
+    "51": ("tipo-atendimento-odontologia", "tipo de atendimento em odontologia"),
+    "52": ("tipo-consulta", "tipo de consulta"),
+    "53": ("tipo-demonstrativo", "tipo de demonstrativo"),
+    "54": ("tipo-guia", "tipo de guia"),
+    "55": ("tipo-faturamento", "tipo de faturamento"),
+    "56": ("natureza-guia", "natureza da guia"),
+    "57": ("tipo-internacao", "tipo de internação"),
+    "58": ("tipo-quimioterapia", "tipo de quimioterapia"),
+    "59": ("unidade-federacao", "unidade da federação"),
+    "60": ("unidade-medida", "unidade de medida"),
+    "61": ("via-acesso", "via de acesso"),
+    "62": ("via-administracao", "via de administração"),
+    "63": (
+        "grupos-procedimentos-ans",
+        "grupos de procedimentos e itens assistenciais para envio à ANS",
+    ),
+    "65": ("metastases", "metástases"),
+    "66": ("nodulo", "nódulo"),
+    "67": ("tumor", "tumor"),
+    "68": ("categoria-despesa", "categoria de despesa"),
+    "69": ("versao-componente-comunicacao", "versão do componente de comunicação do padrão"),
+    "70": ("forma-envio", "forma de envio do padrão"),
+    "71": (
+        "tipo-atendimento-operadora-intermediaria",
+        "tipo de atendimento por operadora intermediária",
+    ),
+    "72": ("tipo-identificacao-beneficiario", "tipo de identificação do beneficiário"),
+    "73": ("etapas-autorizacao", "etapas de autorização"),
+    "74": ("motivos-ausencia-codigo-validacao", "motivos de ausência do código de validação"),
+    "75": ("cobertura-especial", "cobertura especial"),
+    "76": ("regime-atendimento", "regime de atendimento"),
+    "77": ("saude-ocupacional", "saúde ocupacional"),
+    "78": ("tipo-pagamento", "tipo de pagamento"),
+    "79": (
+        "modelos-remuneracao",
+        "modelos de remuneração entre operadoras e prestadores",
+    ),
+    "80": ("formato-documento", "formato do documento"),
+    "81": ("tipo-documento", "tipo do documento"),
+    "82": ("centro-consumo", "centro de consumo"),
+    "87": ("terminologias-unificadas", "relação das terminologias unificadas na saúde suplementar"),
+}
+
+_TISS = tuple(
+    Sistema(
+        f"tiss-{tabela}",
+        f"TISS Tabela {tabela} — {titulo}",
+        f"https://voa.health/fhir/CodeSystem/tiss-{slug}",
+        f"https://voa.health/fhir/ValueSet/tiss-{slug}",
+    )
+    for tabela, (slug, titulo) in _TABELAS_TISS.items()
+)
+
+_SIGTAP = tuple(
+    Sistema(
+        f"sigtap-{slug}",
+        f"SIGTAP — {titulo}",
+        f"https://voa.health/fhir/CodeSystem/sigtap-{slug}",
+        f"https://voa.health/fhir/ValueSet/sigtap-{slug}",
+    )
+    for slug, titulo in (
+        ("grupo", "grupos de procedimento"),
+        ("sub-grupo", "subgrupos de procedimento"),
+        ("servico", "serviços especializados"),
+        ("registro", "instrumentos de registro"),
+        ("financiamento", "tipos de financiamento"),
+        ("modalidade", "modalidades de atendimento"),
+    )
+)
+
 SISTEMAS: tuple[Sistema, ...] = (
     Sistema(
         "cid10",
@@ -136,12 +237,43 @@ SISTEMAS: tuple[Sistema, ...] = (
         "https://voa.health/fhir/CodeSystem/sigtap",
         "https://voa.health/fhir/ValueSet/sigtap",
     ),
+    *_SIGTAP,
     Sistema("anvisa", "ANVISA — produtos e apresentações", "urn:voa:anvisa:registro", None),
     Sistema(
         "cbo",
         "CBO 2002 — ocupações",
         "https://voa.health/fhir/CodeSystem/cbo",
         "https://voa.health/fhir/ValueSet/cbo",
+    ),
+    Sistema(
+        "cfm-especialidade",
+        "CFM — especialidades médicas",
+        "https://voa.health/fhir/CodeSystem/cfm-especialidade",
+        "https://voa.health/fhir/ValueSet/cfm-especialidades",
+    ),
+    Sistema(
+        "rol-ans",
+        "Rol de Procedimentos e Eventos em Saúde da ANS",
+        "https://voa.health/fhir/CodeSystem/rol-ans",
+        "https://voa.health/fhir/ValueSet/rol-ans",
+    ),
+    Sistema(
+        "dut",
+        "Rol da ANS — diretrizes de utilização (DUT)",
+        "https://voa.health/fhir/CodeSystem/rol-diretrizes-dut",
+        "https://voa.health/fhir/ValueSet/rol-diretrizes-dut",
+    ),
+    Sistema(
+        "cnes",
+        "CNES — estabelecimentos de saúde",
+        "urn:voa:br:cnes",
+        "urn:voa:br:cnes:todos",
+    ),
+    Sistema(
+        "ans-operadora",
+        "ANS — operadoras ativas",
+        "urn:voa:br:ans-registro",
+        "urn:voa:br:ans-registro:todos",
     ),
     Sistema(
         "loinc",
@@ -156,30 +288,7 @@ SISTEMAS: tuple[Sistema, ...] = (
         "http://unitsofmeasure.org",
         "https://voa.health/fhir/ValueSet/voa-unidades-de-medida",
     ),
-    Sistema(
-        "tiss-50",
-        "TISS Tabela 50 — tipo de atendimento",
-        "https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento",
-        "https://voa.health/fhir/ValueSet/tiss-tipo-atendimento",
-    ),
-    Sistema(
-        "tiss-52",
-        "TISS Tabela 52 — tipo de consulta",
-        "https://voa.health/fhir/CodeSystem/tiss-tipo-consulta",
-        "https://voa.health/fhir/ValueSet/tiss-tipo-consulta",
-    ),
-    Sistema(
-        "tiss-60",
-        "TISS Tabela 60 — unidade de medida",
-        "https://voa.health/fhir/CodeSystem/tiss-unidade-medida",
-        "https://voa.health/fhir/ValueSet/tiss-unidade-medida",
-    ),
-    Sistema(
-        "tiss-76",
-        "TISS Tabela 76 — regime de atendimento",
-        "https://voa.health/fhir/CodeSystem/tiss-regime-atendimento",
-        "https://voa.health/fhir/ValueSet/tiss-regime-atendimento",
-    ),
+    *_TISS,
     Sistema(
         "voa-categoria",
         "Voa — categoria de serviço",
@@ -243,10 +352,10 @@ def criar_tuss(cliente: Terminologia | None = None) -> Tuss:
 
 def tiss_dominio(tabela: str | int) -> Sistema:
     """Encontre um domínio TISS pelo número da tabela."""
-    name = f"tiss-{tabela}"
-    if name not in {"tiss-50", "tiss-52", "tiss-60", "tiss-76"}:
-        raise ValueError("Tabela TISS desconhecida. Válidas: 50, 52, 60, 76.")
-    return _POR_NOME[name]
+    if str(tabela) not in _TABELAS_TISS:
+        validas = ", ".join(_TABELAS_TISS)
+        raise ValueError(f"Tabela TISS desconhecida. Válidas: {validas}.")
+    return _POR_NOME[f"tiss-{tabela}"]
 
 
 def _serialize_sistema(item: Sistema) -> dict[str, Any]:

@@ -28,12 +28,56 @@
     "value_set": "https://voa.health/fhir/ValueSet/sigtap"
   },
   {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap-grupo",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap-grupo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap-sub-grupo",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap-sub-grupo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap-servico",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap-servico"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap-registro",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap-registro"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap-financiamento",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap-financiamento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/sigtap-modalidade",
+    "value_set": "https://voa.health/fhir/ValueSet/sigtap-modalidade"
+  },
+  {
     "system": "urn:voa:anvisa:registro",
     "value_set": null
   },
   {
     "system": "https://voa.health/fhir/CodeSystem/cbo",
     "value_set": "https://voa.health/fhir/ValueSet/cbo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/cfm-especialidade",
+    "value_set": "https://voa.health/fhir/ValueSet/cfm-especialidades"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/rol-ans",
+    "value_set": "https://voa.health/fhir/ValueSet/rol-ans"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/rol-diretrizes-dut",
+    "value_set": "https://voa.health/fhir/ValueSet/rol-diretrizes-dut"
+  },
+  {
+    "system": "urn:voa:br:cnes",
+    "value_set": "urn:voa:br:cnes:todos"
+  },
+  {
+    "system": "urn:voa:br:ans-registro",
+    "value_set": "urn:voa:br:ans-registro:todos"
   },
   {
     "system": "http://loinc.org",
@@ -44,20 +88,240 @@
     "value_set": "https://voa.health/fhir/ValueSet/voa-unidades-de-medida"
   },
   {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-carater-atendimento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-carater-atendimento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-codigo-despesa",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-codigo-despesa"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-conselho-profissional",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-conselho-profissional"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-debitos-creditos",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-debitos-creditos"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-dentes",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-dentes"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-diagnostico-imagem",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-diagnostico-imagem"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-escala-capacidade-funcional",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-escala-capacidade-funcional"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-estadiamento-tumor",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-estadiamento-tumor"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-faces-dente",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-faces-dente"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-finalidade-tratamento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-finalidade-tratamento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-forma-pagamento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-forma-pagamento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-grau-participacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-grau-participacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-indicador-acidente",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-indicador-acidente"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-indicador-debito-credito",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-indicador-debito-credito"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-mensagens",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-mensagens"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-motivo-encerramento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-motivo-encerramento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-origem-guia",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-origem-guia"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-regime-internacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-regime-internacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-regioes-boca",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-regioes-boca"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-sexo",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-sexo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-situacao-inicial-dente",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-situacao-inicial-dente"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-status-solicitacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-status-solicitacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-status-cancelamento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-status-cancelamento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-status-protocolo",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-status-protocolo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tecnica-utilizada",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tecnica-utilizada"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-acomodacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-acomodacao"
+  },
+  {
     "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento",
     "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-atendimento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento-odontologia",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-atendimento-odontologia"
   },
   {
     "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-consulta",
     "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-consulta"
   },
   {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-demonstrativo",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-demonstrativo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-guia",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-guia"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-faturamento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-faturamento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-natureza-guia",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-natureza-guia"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-internacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-internacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-quimioterapia",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-quimioterapia"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-unidade-federacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-unidade-federacao"
+  },
+  {
     "system": "https://voa.health/fhir/CodeSystem/tiss-unidade-medida",
     "value_set": "https://voa.health/fhir/ValueSet/tiss-unidade-medida"
   },
   {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-via-acesso",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-via-acesso"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-via-administracao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-via-administracao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-grupos-procedimentos-ans",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-grupos-procedimentos-ans"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-metastases",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-metastases"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-nodulo",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-nodulo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tumor",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tumor"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-categoria-despesa",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-categoria-despesa"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-versao-componente-comunicacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-versao-componente-comunicacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-forma-envio",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-forma-envio"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-atendimento-operadora-intermediaria",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-atendimento-operadora-intermediaria"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-identificacao-beneficiario",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-identificacao-beneficiario"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-etapas-autorizacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-etapas-autorizacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-motivos-ausencia-codigo-validacao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-motivos-ausencia-codigo-validacao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-cobertura-especial",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-cobertura-especial"
+  },
+  {
     "system": "https://voa.health/fhir/CodeSystem/tiss-regime-atendimento",
     "value_set": "https://voa.health/fhir/ValueSet/tiss-regime-atendimento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-saude-ocupacional",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-saude-ocupacional"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-pagamento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-pagamento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-modelos-remuneracao",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-modelos-remuneracao"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-formato-documento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-formato-documento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-tipo-documento",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-tipo-documento"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-centro-consumo",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-centro-consumo"
+  },
+  {
+    "system": "https://voa.health/fhir/CodeSystem/tiss-terminologias-unificadas",
+    "value_set": "https://voa.health/fhir/ValueSet/tiss-terminologias-unificadas"
   },
   {
     "system": "https://voa.health/fhir/CodeSystem/voa-categoria-servico",

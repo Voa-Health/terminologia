@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 
+from terminologia import SISTEMAS
 from terminologia._mcp import TOOLS, _resultado_tool
 
 
@@ -29,4 +30,10 @@ def test_tool_mcp_retorna_erro_com_link_de_chaves(monkeypatch):
 def test_tool_sistemas_responde_com_json():
     result = _resultado_tool("terminologia_sistemas", {})
     assert not result.isError
-    assert len(json.loads(result.content[0].text)) == 16
+    assert len(json.loads(result.content[0].text)) == len(SISTEMAS)
+
+
+def test_tools_aceitam_todos_os_sistemas():
+    nomes = [item.nome for item in SISTEMAS]
+    assert {"cnes", "ans-operadora", "tiss-38"} <= set(nomes)
+    assert all(tool.inputSchema["properties"]["sistema"]["enum"] == nomes for tool in TOOLS[:4])

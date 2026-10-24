@@ -4,13 +4,13 @@ import json
 
 import terminologia
 import terminologia._cliente as cliente_modulo
-from terminologia import Terminologia
+from terminologia import SISTEMAS, Terminologia
 from terminologia.__main__ import main
 
 
 def test_cli_sistemas_json(capsys):
     assert main(["sistemas", "--json"]) == 0
-    assert len(json.loads(capsys.readouterr().out)) == 16
+    assert len(json.loads(capsys.readouterr().out)) == len(SISTEMAS)
 
 
 def test_cli_busca_e_json(servidor, capsys):
