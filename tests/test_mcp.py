@@ -33,11 +33,7 @@ def test_tool_sistemas_responde_com_json():
     assert len(json.loads(result.content[0].text)) == len(SISTEMAS)
 
 
-def test_tool_buscar_omite_sistemas_sem_busca():
-    enums = {tool.name: tool.inputSchema["properties"]["sistema"]["enum"] for tool in TOOLS[:4]}
-    assert {"cnes", "ans-operadora"}.isdisjoint(enums["terminologia_buscar"])
-    assert "tiss-38" in enums["terminologia_buscar"]
-    assert {"cnes", "ans-operadora", "tiss-38"} <= set(enums["terminologia_lookup"])
-    result = _resultado_tool("terminologia_buscar", {"sistema": "cnes", "texto": "hospital"})
-    assert result.isError
-    assert "busca textual" in result.content[0].text
+def test_tools_aceitam_todos_os_sistemas():
+    nomes = [item.nome for item in SISTEMAS]
+    assert {"cnes", "ans-operadora", "tiss-38"} <= set(nomes)
+    assert all(tool.inputSchema["properties"]["sistema"]["enum"] == nomes for tool in TOOLS[:4])

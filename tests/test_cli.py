@@ -68,8 +68,6 @@ def test_cli_exit_codes_e_erros(servidor, capsys):
         assert "inválido:" in capsys.readouterr().out
         assert main(["buscar", "sistema-invalido", "x"]) == 2
         assert "Sistema desconhecido" in capsys.readouterr().err
-        assert main(["buscar", "cnes", "hospital"]) == 2
-        assert "busca textual" in capsys.readouterr().err
         assert main(["buscar", "anvisa", "x"]) == 2
         assert "search-unavailable" in capsys.readouterr().err
         servidor.respostas["ValueSet/$expand"] = {

@@ -30,7 +30,6 @@ class Sistema:
     system: str
     value_set: str | None
     atribuicao: str | None = None
-    busca: bool = True
     _cliente: Terminologia | None = field(default=None, compare=False, repr=False)
 
     def com(self, cliente: Terminologia) -> Sistema:
@@ -47,9 +46,6 @@ class Sistema:
     def buscar(self, texto: str, n: int = 20) -> Resultado:
         """Busque conceitos pelo texto."""
         from ._cliente import _resultado_busca
-
-        if not self.busca:
-            raise ValueError(f"{self.nome} não tem busca textual; use lookup ou validar.")
 
         cliente = self._resolver_cliente()
         if self.value_set is not None:
@@ -261,14 +257,17 @@ SISTEMAS: tuple[Sistema, ...] = (
         "https://voa.health/fhir/CodeSystem/rol-diretrizes-dut",
         "https://voa.health/fhir/ValueSet/rol-diretrizes-dut",
     ),
-    # Registros grandes: o servidor resolve por código, sem busca textual.
-    Sistema("cnes", "CNES — estabelecimentos de saúde", "urn:voa:br:cnes", None, busca=False),
+    Sistema(
+        "cnes",
+        "CNES — estabelecimentos de saúde",
+        "urn:voa:br:cnes",
+        "urn:voa:br:cnes:todos",
+    ),
     Sistema(
         "ans-operadora",
         "ANS — operadoras ativas",
         "urn:voa:br:ans-registro",
         "urn:voa:br:ans-registro:todos",
-        busca=False,
     ),
     Sistema(
         "loinc",
@@ -360,5 +359,4 @@ def _serialize_sistema(item: Sistema) -> dict[str, Any]:
         "system": item.system,
         "value_set": item.value_set,
         "atribuicao": item.atribuicao,
-        "busca": item.busca,
     }

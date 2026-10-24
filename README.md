@@ -51,6 +51,9 @@ for conceito in resultado:
 consulta = terminologia.tuss.lookup("10101012")
 if consulta:
     print(consulta.display)
+
+for estabelecimento in terminologia.sistema("cnes").buscar("hospital das clínicas", n=5):
+    print(estabelecimento.code, estabelecimento.display)
 ```
 
 ## CLI
@@ -131,8 +134,6 @@ Cursor (`mcp.json`):
 | `loinc` | `http://loinc.org` |
 | `ucum` | `http://unitsofmeasure.org` |
 | `voa-categoria` | `https://voa.health/fhir/CodeSystem/voa-categoria-servico` |
-
-`cnes` e `ans-operadora` não têm busca textual: use `lookup` ou `validar`.
 
 <details>
 <summary>Tabelas de domínio TISS (59)</summary>

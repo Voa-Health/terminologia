@@ -24,7 +24,6 @@ INSTRUCOES = (
 )
 
 _SISTEMAS = [item.nome for item in SISTEMAS]
-_SISTEMAS_COM_BUSCA = [item.nome for item in SISTEMAS if item.busca]
 
 TOOLS: list[Tool] = [
     Tool(
@@ -33,7 +32,7 @@ TOOLS: list[Tool] = [
         inputSchema={
             "type": "object",
             "properties": {
-                "sistema": {"type": "string", "enum": _SISTEMAS_COM_BUSCA},
+                "sistema": {"type": "string", "enum": _SISTEMAS},
                 "texto": {"type": "string"},
                 "n": {"type": "integer", "default": 20},
             },
