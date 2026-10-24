@@ -73,7 +73,7 @@
   },
   {
     "system": "urn:voa:br:cnes",
-    "value_set": null
+    "value_set": "urn:voa:br:cnes:todos"
   },
   {
     "system": "urn:voa:br:ans-registro",

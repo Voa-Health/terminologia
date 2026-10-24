@@ -139,8 +139,26 @@ def test_metodos_crus_montam_consulta(cliente, servidor, call, path, query):
         ),
         (
             lambda client: sistema("cnes").com(client).validar("0000000"),
-            "/CodeSystem/$validate-code",
-            {"url": ["urn:voa:br:cnes"], "code": ["0000000"]},
+            "/ValueSet/$validate-code",
+            {
+                "url": ["urn:voa:br:cnes:todos"],
+                "code": ["0000000"],
+                "system": ["urn:voa:br:cnes"],
+            },
+        ),
+        (
+            lambda client: sistema("cnes").com(client).buscar("hospital exemplo", n=5),
+            "/ValueSet/$expand",
+            {"url": ["urn:voa:br:cnes:todos"], "filter": ["hospital exemplo"], "count": ["5"]},
+        ),
+        (
+            lambda client: sistema("ans-operadora").com(client).buscar("operadora exemplo"),
+            "/ValueSet/$expand",
+            {
+                "url": ["urn:voa:br:ans-registro:todos"],
+                "filter": ["operadora exemplo"],
+                "count": ["20"],
+            },
         ),
         (
             lambda client: sistema("ans-operadora").com(client).validar("000000"),
@@ -381,7 +399,7 @@ def test_sistemas_snapshot_e_aliases():
             "https://voa.health/fhir/CodeSystem/tiss-carater-atendimento",
             "https://voa.health/fhir/ValueSet/tiss-carater-atendimento",
         ),
-        ("cnes", "urn:voa:br:cnes", None),
+        ("cnes", "urn:voa:br:cnes", "urn:voa:br:cnes:todos"),
         ("ans-operadora", "urn:voa:br:ans-registro", "urn:voa:br:ans-registro:todos"),
         (
             "rol-ans",
@@ -415,11 +433,3 @@ def test_sistema_resolve_nome_e_canonicos(nome, system, value_set):
 
 def test_tiss_dominio_aceita_numero_e_texto():
     assert tiss_dominio(38) is tiss_dominio("38") is sistema("tiss-38")
-
-
-@pytest.mark.parametrize("nome", ["cnes", "ans-operadora"])
-def test_sistema_sem_busca_textual_falha_sem_rede(servidor, nome):
-    cliente = Terminologia(api_key="sk_voa_teste", base_url=servidor.url)
-    with pytest.raises(ValueError, match="não tem busca textual"):
-        sistema(nome).com(cliente).buscar("hospital")
-    assert servidor.requisicoes == []
