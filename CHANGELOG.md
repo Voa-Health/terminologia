@@ -1,5 +1,9 @@
 # Registro de alterações
 
+## 0.1.0
+
+- Primeira versão estável do cliente, da CLI e do servidor MCP.
+
 ## 0.1.0a2
 
 - Atualiza o endpoint FHIR e permite configurar `TERMINOLOGIA_URL`.
