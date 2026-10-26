@@ -16,6 +16,3 @@ updates:
       dependencies:
         patterns:
           - "*"
-    ignore:
-      - dependency-name: mcp
-        update-types: ["version-update:semver-major"]

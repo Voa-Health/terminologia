@@ -71,19 +71,26 @@ jobs:
       - run: uvx twine check --strict dist/*
       - run: python -m venv /tmp/terminologia-base
       - run: python -m venv /tmp/terminologia-mcp
+      - run: python -m venv /tmp/terminologia-mcp1
       - run: wheel=$(printf '%s\n' dist/*.whl) && /tmp/terminologia-base/bin/pip install "$wheel"
       - run: /tmp/terminologia-base/bin/python -c "import terminologia"
       - run: if /tmp/terminologia-base/bin/python -c "import mcp"; then exit 1; fi
       - run: wheel=$(printf '%s\n' dist/*.whl) && /tmp/terminologia-mcp/bin/pip install "${wheel}[mcp]"
+      - run: wheel=$(printf '%s\n' dist/*.whl) && /tmp/terminologia-mcp1/bin/pip install "${wheel}[mcp]" "mcp>=1.30,<2"
       - run: |
-          /tmp/terminologia-mcp/bin/python - <<'PY'
+          cat > /tmp/check_mcp.py <<'PY'
           import asyncio
+          import os
           import sys
+          from importlib.metadata import version
 
           from mcp.client.session import ClientSession
           from mcp.client.stdio import StdioServerParameters, stdio_client
 
           async def check():
+              mcp_version = version("mcp")
+              print(f"mcp version: {mcp_version}")
+              assert mcp_version.split(".")[0] == os.environ["MCP_MAJOR"]
               parameters = StdioServerParameters(
                   command=sys.executable,
                   args=["-m", "terminologia", "mcp"],
@@ -92,7 +99,7 @@ jobs:
                   async with ClientSession(read_stream, write_stream) as session:
                       initialized = await session.initialize()
                       tools = await session.list_tools()
-                      assert initialized.serverInfo.name == "terminologia"
+                      assert initialized.model_dump(by_alias=True)["serverInfo"]["name"] == "terminologia"
                       assert {tool.name for tool in tools.tools} == {
                           "terminologia_buscar",
                           "terminologia_lookup",
@@ -103,6 +110,8 @@ jobs:
 
           asyncio.run(check())
           PY
+      - run: MCP_MAJOR=2 /tmp/terminologia-mcp/bin/python /tmp/check_mcp.py
+      - run: MCP_MAJOR=1 /tmp/terminologia-mcp1/bin/python /tmp/check_mcp.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dist
