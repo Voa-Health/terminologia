@@ -12,7 +12,7 @@ license = { text = "Apache-2.0" }
 authors = [{ name = "Voa Health" }]
 keywords = ["terminologia", "CID-10", "TUSS", "SIGTAP", "ANVISA", "CBO", "CIAP-2", "LOINC", "FHIR", "saúde"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: Apache Software License",
   "Operating System :: OS Independent",
@@ -26,7 +26,7 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-mcp = ["mcp>=1.30,<3"]
+mcp = ["mcp>=1.30,<2"]
 
 [project.scripts]
 terminologia = "terminologia.__main__:main"
