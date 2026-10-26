@@ -1,5 +1,10 @@
 # Registro de alterações
 
+## 0.1.1
+
+- O servidor MCP local passa a funcionar com o SDK `mcp` 2.x, mantendo suporte ao 1.x.
+- Falhas inesperadas numa tool voltam como resultado com `isError`.
+
 ## 0.1.0
 
 - Primeira versão estável do cliente, da CLI e do servidor MCP.
