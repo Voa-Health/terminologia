@@ -78,7 +78,7 @@ jobs:
       - run: wheel=$(printf '%s\n' dist/*.whl) && /tmp/terminologia-mcp/bin/pip install "${wheel}[mcp]"
       - run: wheel=$(printf '%s\n' dist/*.whl) && /tmp/terminologia-mcp1/bin/pip install "${wheel}[mcp]" "mcp>=1.30,<2"
       - run: |
-          /tmp/terminologia-mcp/bin/python - <<'PY'
+          cat > /tmp/check_mcp.py <<'PY'
           import asyncio
           import os
           import sys
@@ -110,43 +110,8 @@ jobs:
 
           asyncio.run(check())
           PY
-        env:
-          MCP_MAJOR: "2"
-      - run: |
-          /tmp/terminologia-mcp1/bin/python - <<'PY'
-          import asyncio
-          import os
-          import sys
-          from importlib.metadata import version
-
-          from mcp.client.session import ClientSession
-          from mcp.client.stdio import StdioServerParameters, stdio_client
-
-          async def check():
-              mcp_version = version("mcp")
-              print(f"mcp version: {mcp_version}")
-              assert mcp_version.split(".")[0] == os.environ["MCP_MAJOR"]
-              parameters = StdioServerParameters(
-                  command=sys.executable,
-                  args=["-m", "terminologia", "mcp"],
-              )
-              async with stdio_client(parameters) as (read_stream, write_stream):
-                  async with ClientSession(read_stream, write_stream) as session:
-                      initialized = await session.initialize()
-                      tools = await session.list_tools()
-                      assert initialized.model_dump(by_alias=True)["serverInfo"]["name"] == "terminologia"
-                      assert {tool.name for tool in tools.tools} == {
-                          "terminologia_buscar",
-                          "terminologia_lookup",
-                          "terminologia_validar",
-                          "terminologia_traduzir",
-                          "terminologia_sistemas",
-                      }
-
-          asyncio.run(check())
-          PY
-        env:
-          MCP_MAJOR: "1"
+      - run: MCP_MAJOR=2 /tmp/terminologia-mcp/bin/python /tmp/check_mcp.py
+      - run: MCP_MAJOR=1 /tmp/terminologia-mcp1/bin/python /tmp/check_mcp.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dist

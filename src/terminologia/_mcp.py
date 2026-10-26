@@ -130,7 +130,7 @@ def _resultado_tool(nome: str, arguments: dict[str, Any]) -> CallToolResult:
     try:
         result = _executar(nome, arguments)
     except Exception as exc:
-        # Keep tool failures visible to clients instead of propagating JSON-RPC errors.
+        # Falhas viram isError para o modelo ver o texto, em vez de erro JSON-RPC.
         return CallToolResult(  # type: ignore[call-arg]
             content=[TextContent(type="text", text=str(exc))],
             isError=True,
@@ -143,7 +143,7 @@ def _resultado_tool(nome: str, arguments: dict[str, Any]) -> CallToolResult:
 
 def criar_servidor() -> Server:
     """Crie o servidor MCP low-level."""
-    # The 1.x SDK uses decorators; 2.x accepts handlers in the constructor.
+    # O SDK 1.x registra handlers por decorators; o 2.x, no construtor.
     if hasattr(Server, "list_tools"):
         server = Server("terminologia", instructions=INSTRUCOES)
 
