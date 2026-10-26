@@ -8,10 +8,9 @@ from typing import Any
 import anyio
 from mcp.server.lowlevel import Server
 from mcp.server.stdio import stdio_server
-from mcp.types import CallToolResult, TextContent, Tool
+from mcp.types import CallToolRequestParams, CallToolResult, ListToolsResult, TextContent, Tool
 
 from ._cliente import padrao
-from ._erros import TerminologiaError
 from ._sistemas import SISTEMAS, _serialize_sistema, sistema
 
 INSTRUCOES = (
@@ -26,7 +25,7 @@ INSTRUCOES = (
 _SISTEMAS = [item.nome for item in SISTEMAS]
 
 TOOLS: list[Tool] = [
-    Tool(
+    Tool(  # type: ignore[call-arg]
         name="terminologia_buscar",
         description="Busque conceitos de um sistema pelo texto.",
         inputSchema={
@@ -39,7 +38,7 @@ TOOLS: list[Tool] = [
             "required": ["sistema", "texto"],
         },
     ),
-    Tool(
+    Tool(  # type: ignore[call-arg]
         name="terminologia_lookup",
         description="Consulte o display oficial de um código.",
         inputSchema={
@@ -51,7 +50,7 @@ TOOLS: list[Tool] = [
             "required": ["sistema", "codigo"],
         },
     ),
-    Tool(
+    Tool(  # type: ignore[call-arg]
         name="terminologia_validar",
         description="Valide um código em um sistema.",
         inputSchema={
@@ -63,7 +62,7 @@ TOOLS: list[Tool] = [
             "required": ["sistema", "codigo"],
         },
     ),
-    Tool(
+    Tool(  # type: ignore[call-arg]
         name="terminologia_traduzir",
         description="Traduza um código para outro sistema.",
         inputSchema={
@@ -76,7 +75,7 @@ TOOLS: list[Tool] = [
             "required": ["sistema", "codigo"],
         },
     ),
-    Tool(
+    Tool(  # type: ignore[call-arg]
         name="terminologia_sistemas",
         description="Liste os sistemas de codificação disponíveis.",
         inputSchema={"type": "object", "properties": {}},
@@ -130,12 +129,13 @@ def _executar(
 def _resultado_tool(nome: str, arguments: dict[str, Any]) -> CallToolResult:
     try:
         result = _executar(nome, arguments)
-    except (TerminologiaError, ValueError, KeyError, TypeError) as exc:
-        return CallToolResult(
+    except Exception as exc:
+        # Keep tool failures visible to clients instead of propagating JSON-RPC errors.
+        return CallToolResult(  # type: ignore[call-arg]
             content=[TextContent(type="text", text=str(exc))],
             isError=True,
         )
-    return CallToolResult(
+    return CallToolResult(  # type: ignore[call-arg]
         content=[TextContent(type="text", text=_serializar(result))],
         isError=False,
     )
@@ -143,17 +143,32 @@ def _resultado_tool(nome: str, arguments: dict[str, Any]) -> CallToolResult:
 
 def criar_servidor() -> Server:
     """Crie o servidor MCP low-level."""
-    server = Server("terminologia", instructions=INSTRUCOES)
+    # The 1.x SDK uses decorators; 2.x accepts handlers in the constructor.
+    if hasattr(Server, "list_tools"):
+        server = Server("terminologia", instructions=INSTRUCOES)
 
-    @server.list_tools()  # type: ignore[no-untyped-call, untyped-decorator]
-    async def list_tools() -> list[Tool]:
-        return TOOLS
+        @server.list_tools()  # type: ignore[attr-defined, untyped-decorator]
+        async def list_tools() -> list[Tool]:
+            return TOOLS
 
-    @server.call_tool(validate_input=False)  # type: ignore[untyped-decorator]
-    async def call_tool(name: str, arguments: dict[str, Any]) -> CallToolResult:
-        return _resultado_tool(name, arguments)
+        @server.call_tool(validate_input=False)  # type: ignore[attr-defined, untyped-decorator]
+        async def call_tool(name: str, arguments: dict[str, Any]) -> CallToolResult:
+            return _resultado_tool(name, arguments)
 
-    return server
+        return server
+
+    async def _listar(ctx: Any, params: Any) -> ListToolsResult:
+        return ListToolsResult(tools=TOOLS)
+
+    async def _chamar(ctx: Any, params: CallToolRequestParams) -> CallToolResult:
+        return _resultado_tool(params.name, params.arguments or {})
+
+    return Server(
+        "terminologia",
+        instructions=INSTRUCOES,
+        on_list_tools=_listar,
+        on_call_tool=_chamar,
+    )
 
 
 async def _serve() -> None:
