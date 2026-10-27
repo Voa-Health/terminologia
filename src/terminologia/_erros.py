@@ -77,6 +77,8 @@ def _mensagem_http(status: int, payload: Any) -> tuple[str, str | None]:
                 message = diagnostics
             elif isinstance(detail_text, str) and detail_text:
                 message = detail_text
+        if codigo is None and isinstance(payload.get("error_code"), str):
+            codigo = payload["error_code"]
         if message is None and isinstance(payload.get("detail"), str):
             message = payload["detail"]
     return message or f"HTTP {status}", codigo
