@@ -41,7 +41,7 @@ export TERMINOLOGIA_KEY=sk_voa_...
 Chaves `sk_tiss_` existentes também podem ser usadas quando possuem o escopo
 `terminology:read`.
 
-O endpoint padrão é `https://terminologia.voa.health/api/v1/fhir`. O argumento
+O endpoint padrão é `https://terminologia.voa.health/api/v2/terminology/fhir`. O argumento
 `base_url` do cliente tem precedência; sem ele, defina `TERMINOLOGIA_URL` para
 usar outro endpoint.
 

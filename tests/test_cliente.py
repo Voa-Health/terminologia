@@ -90,7 +90,7 @@ def test_metodos_crus_montam_consulta(cliente, servidor, call, path, query):
 
 def test_url_base_respeita_argumento_ambiente_e_padrao(monkeypatch):
     monkeypatch.delenv("TERMINOLOGIA_URL", raising=False)
-    assert Terminologia().base_url == "https://terminologia.voa.health/api/v1/fhir"
+    assert Terminologia().base_url == "https://terminologia.voa.health/api/v2/terminology/fhir"
 
     monkeypatch.setenv("TERMINOLOGIA_URL", "https://env.example/fhir/")
     assert Terminologia().base_url == "https://env.example/fhir"
@@ -336,11 +336,11 @@ def test_lookup_retorna_none_em_not_found(servidor):
     [
         (
             401,
-            {"detail": "Chave inválida"},
+            {"error_code": "invalid_credential", "detail": "Chave inválida"},
             {},
             ChaveInvalidaError,
             "Chave inválida",
-            None,
+            "invalid_credential",
         ),
         (
             403,
