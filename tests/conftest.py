@@ -64,5 +64,14 @@ def servidor():
 
 
 @pytest.fixture
+def servidor_destino():
+    server = ServidorFalso()
+    try:
+        yield server
+    finally:
+        server.fechar()
+
+
+@pytest.fixture
 def cliente(servidor: ServidorFalso) -> Terminologia:
     return Terminologia(api_key="sk_voa_teste", base_url=servidor.url, timeout=0.5)

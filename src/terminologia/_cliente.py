@@ -10,11 +10,12 @@ import urllib.error
 import urllib.request
 from collections import OrderedDict
 from typing import Any
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 
 from . import __version__
 from ._erros import (
     ChaveInvalidaError,
+    RedeError,
     TerminologiaError,
     erro_http,
     erro_rede,
@@ -26,6 +27,40 @@ _CACHE_MAXIMO = 256
 _CACHE_PADRAO: dict[str, Terminologia | None] = {"cliente": None}
 _CACHE_LOCK = threading.Lock()
 _URL_PADRAO = "https://terminologia.voa.health/api/v1/fhir"
+
+
+def _origem(url: str) -> tuple[str, str | None, int | None]:
+    partes = urlsplit(url)
+    porta = partes.port
+    if porta is None:
+        porta = {"http": 80, "https": 443}.get(partes.scheme)
+    return partes.scheme, partes.hostname, porta
+
+
+class _RedirectMesmaOrigem(urllib.request.HTTPRedirectHandler):
+    """Preserve credenciais somente em redirects para a mesma origem."""
+
+    def redirect_request(
+        self,
+        req: urllib.request.Request,
+        fp: Any,
+        code: int,
+        msg: str,
+        headers: Any,
+        newurl: str,
+    ) -> urllib.request.Request | None:
+        """Recuse mudanças de esquema, host ou porta antes do envio."""
+        try:
+            mesma_origem = _origem(req.full_url) == _origem(newurl)
+        except ValueError:
+            mesma_origem = False
+        if not mesma_origem:
+            fp.close()
+            raise RedeError("Redirecionamento para outra origem bloqueado.", status=code)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = urllib.request.build_opener(_RedirectMesmaOrigem())
 
 
 class Terminologia:
@@ -80,7 +115,7 @@ class Terminologia:
             method="GET",
         )
         try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            with _OPENER.open(request, timeout=self.timeout) as response:
                 body = response.read()
                 status = response.status
                 headers = response.headers
