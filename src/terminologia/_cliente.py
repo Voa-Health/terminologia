@@ -51,7 +51,7 @@ class _RedirectMesmaOrigem(urllib.request.HTTPRedirectHandler):
         headers: Any,
         newurl: str,
     ) -> urllib.request.Request | None:
-        """Recuse mudanças de esquema, host ou porta antes do envio."""
+        """Evite que um redirect exponha a chave de acesso."""
         try:
             mesma_origem = _origem(req.full_url) == _origem(newurl)
         except ValueError:
