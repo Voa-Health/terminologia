@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import json
+from email.message import Message
+from io import BytesIO
 from pathlib import Path
 from typing import Any
+from urllib.request import Request
 
 import pytest
 
@@ -18,6 +21,7 @@ from terminologia import (
     tiss_dominio,
     tuss,
 )
+from terminologia._cliente import _RedirectMesmaOrigem
 
 PARAMETERS_VALID = {
     "resourceType": "Parameters",
@@ -86,6 +90,68 @@ def test_metodos_crus_montam_consulta(cliente, servidor, call, path, query):
     assert request["headers"]["User-Agent"] == f"terminologia/{terminologia.__version__}"
     assert request["headers"]["X-Client"] == f"terminologia/{terminologia.__version__}"
     assert "semantic" not in request["query"]
+
+
+@pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+@pytest.mark.parametrize("caso", ["mesma_origem", "outra_porta", "salto_outra_porta"])
+def test_redirects_preservam_credenciais_so_na_mesma_origem(
+    cliente, servidor, servidor_destino, status, caso
+):
+    destino = f"{servidor_destino.url}/destino?segredo=sintetico"
+    local = caso == "mesma_origem"
+    location = "/destino" if local else destino
+    servidor.respostas["CodeSystem/$voa-search"] = {
+        "status": status,
+        "headers": {"Location": "/intermediario" if caso == "salto_outra_porta" else location},
+    }
+    servidor.respostas["intermediario"] = {"status": status, "headers": {"Location": destino}}
+    servidor.respostas["destino"] = {"corpo": PARAMETERS_VALID}
+
+    if local:
+        assert cliente.search("amostra") == PARAMETERS_VALID
+        assert servidor.requisicoes[-1]["path"] == "/destino"
+    else:
+        with pytest.raises(RedeError, match="Redirecionamento para outra origem bloqueado") as erro:
+            cliente.search("amostra")
+        assert erro.value.status == status
+        assert destino not in str(erro.value)
+        assert "sintetico" not in str(erro.value)
+
+    assert len(servidor.requisicoes) == (1 if caso == "outra_porta" else 2)
+    assert all(
+        req["headers"]["Authorization"] == "Bearer sk_voa_teste" for req in servidor.requisicoes
+    )
+    assert servidor_destino.requisicoes == []
+
+
+@pytest.mark.parametrize(
+    ("origem", "destino", "permitido"),
+    [
+        ("https://example.test/inicio", "http://example.test/destino", False),
+        ("http://example.test/inicio", "https://example.test/destino", False),
+        ("https://example.test/inicio", "https://outro.test/destino", False),
+        ("https://example.test/inicio", "https://example.test:444/destino", False),
+        ("https://example.test/inicio", "https://example.test:invalida/destino", False),
+        ("https://example.test/inicio", "https://example.test/destino", True),
+        ("https://example.test/inicio", "https://EXAMPLE.test:443/destino", True),
+        ("https://example.test:443/inicio", "https://example.test/destino", True),
+        ("http://example.test/inicio", "http://example.test:80/destino", True),
+        ("http://example.test/inicio", "http://example.test:0/destino", False),
+    ],
+)
+def test_handler_compara_esquema_host_e_porta(origem, destino, permitido):
+    request = Request(origem, headers={"Authorization": "Bearer sk_voa_teste"})
+    response = BytesIO()
+    handler = _RedirectMesmaOrigem()
+    if permitido:
+        redirected = handler.redirect_request(request, response, 302, "Found", Message(), destino)
+        assert redirected.full_url == destino
+        assert redirected.get_header("Authorization") == "Bearer sk_voa_teste"
+    else:
+        with pytest.raises(RedeError, match="Redirecionamento para outra origem bloqueado") as erro:
+            handler.redirect_request(request, response, 302, "Found", Message(), destino)
+        assert destino not in str(erro.value)
+        assert response.closed
 
 
 def test_url_base_respeita_argumento_ambiente_e_padrao(monkeypatch):
