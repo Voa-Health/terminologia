@@ -46,7 +46,7 @@ O endpoint padrão é `https://terminologia.voa.health/api/v1/fhir`. O argumento
 usar outro endpoint.
 
 O cliente segue redirects apenas na mesma origem (esquema, host e porta).
-Qualquer mudança gera `RedeError` antes do envio da requisição redirecionada.
+Qualquer mudança gera `TerminologiaError` antes do envio da requisição redirecionada.
 
 O transporte usa um opener próprio criado ao importar o pacote. Defina
 `HTTP_PROXY`, `HTTPS_PROXY` e `NO_PROXY` antes do import; openers globais de
