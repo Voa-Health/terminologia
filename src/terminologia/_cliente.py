@@ -40,6 +40,8 @@ def _origem(url: str) -> tuple[str, str | None, int | None]:
 class _RedirectMesmaOrigem(urllib.request.HTTPRedirectHandler):
     """Preserve credenciais somente em redirects para a mesma origem."""
 
+    http_error_308 = urllib.request.HTTPRedirectHandler.http_error_302
+
     def redirect_request(
         self,
         req: urllib.request.Request,
@@ -57,7 +59,8 @@ class _RedirectMesmaOrigem(urllib.request.HTTPRedirectHandler):
         if not mesma_origem:
             fp.close()
             raise RedeError("Redirecionamento para outra origem bloqueado.", status=code)
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
+        # Python 3.10 só reconhece o código equivalente 307 neste método.
+        return super().redirect_request(req, fp, 307 if code == 308 else code, msg, headers, newurl)
 
 
 _OPENER = urllib.request.build_opener(_RedirectMesmaOrigem())
