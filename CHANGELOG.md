@@ -1,6 +1,6 @@
 # Registro de alterações
 
-## Não lançado
+## 0.1.2
 
 - O cliente segue redirects apenas para a mesma origem (esquema, host e porta), preservando a chave de acesso nesse destino.
 - Redirects para outra origem são recusados antes do envio, sem expor a URL de destino na mensagem.
