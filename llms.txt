@@ -4,7 +4,7 @@ Cliente Python e servidor MCP para consultar terminologias de saúde em FHIR.
 
 - Instalação: `pip install terminologia`
 - Chave: `TERMINOLOGIA_KEY`, criada em https://tiss-api.voa.health/org
-- API FHIR: https://terminologia.voa.health/api/v1/fhir (`TERMINOLOGIA_URL` substitui o endpoint)
+- API FHIR: https://terminologia.voa.health/api/v2/terminology/fhir (`TERMINOLOGIA_URL` substitui o endpoint)
 - [README](README.md)
 - [Início rápido](README.md#início-rápido)
 - [Sistemas](README.md#sistemas)
