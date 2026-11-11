@@ -26,7 +26,7 @@ from ._sistemas import Sistema
 _CACHE_MAXIMO = 256
 _CACHE_PADRAO: dict[str, Terminologia | None] = {"cliente": None}
 _CACHE_LOCK = threading.Lock()
-_URL_PADRAO = "https://terminologia.voa.health/api/v1/fhir"
+_URL_PADRAO = "https://terminologia.voa.health/api/v2/terminology/fhir"
 
 
 def _origem(url: str) -> tuple[str, str | None, int | None]:

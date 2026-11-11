@@ -73,7 +73,7 @@ def test_cli_exit_codes_e_erros(servidor, capsys):
         assert "search-unavailable" in capsys.readouterr().err
         servidor.respostas["ValueSet/$expand"] = {
             "status": 401,
-            "corpo": {"detail": "Chave inválida"},
+            "corpo": {"error_code": "invalid_credential", "detail": "Chave inválida"},
         }
         assert main(["buscar", "cid10", "x"]) == 2
         assert "https://tiss-api.voa.health/org" in capsys.readouterr().err

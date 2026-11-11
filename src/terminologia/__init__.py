@@ -1,6 +1,6 @@
 """Cliente Python da terminologia de saúde da Voa."""
 
-__version__ = "0.1.2"
+__version__ = "0.2.0"
 
 from ._cliente import Terminologia
 from ._erros import (
