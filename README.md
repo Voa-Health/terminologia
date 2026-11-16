@@ -148,6 +148,21 @@ No Cursor, adicione ao `mcp.json`:
 
 </details>
 
+### ChatGPT
+
+O [pacote ChatGPT](plugins/chatgpt/) reúne os manifests, a skill em português e
+os casos sintéticos de revisão para consultas de terminologia sem dados de paciente.
+Usa o MCP remoto `https://api.voa.health/mcp/terminology/` (também o recurso OAuth),
+com transporte `streamable-http`, OAuth em modo CIMD e o único escopo
+`voa:terminology:read`. A descoberta OAuth fica em
+`https://api.voa.health/.well-known/oauth-protected-resource/terminology`.
+
+O pacote não executa o servidor stdio nem pede senha ou token na conversa.
+As cinco ferramentas são somente leitura. Não envie dados de paciente nem
+pedidos de diagnóstico ou conduta clínica. A conexão OAuth com o ChatGPT e a
+submissão no portal precisam de verificação separada; o pacote não indica
+disponibilidade no diretório.
+
 ## Configuração
 
 <details>

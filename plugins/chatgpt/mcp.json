@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "terminologia": {
+      "type": "streamable-http",
+      "url": "https://api.voa.health/mcp/terminology/",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {"mode": "cimd"},
+            "baseScopes": ["voa:terminology:read"]
+          }
+        }
+      }
+    }
+  }
+}
