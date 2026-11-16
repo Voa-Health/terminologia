@@ -1,0 +1,58 @@
+{
+  "commerce": false,
+  "test_cases": {
+    "positive": [
+      {
+        "description": "Busca genérica de um termo em CID-10, sem paciente.",
+        "prompt": "Busque no CID-10 a expressão genérica dor torácica.",
+        "tools_triggered": "terminologia_buscar",
+        "expected_behavior": "Consulta cid10 pelo texto e apresenta apenas os códigos, displays e systems retornados, sem inferir diagnóstico. Se sugerir um código para registro FHIR, valida antes com terminologia_validar."
+      },
+      {
+        "description": "Consulta de um código público TUSS.",
+        "prompt": "Qual é o display oficial do código TUSS 10101012?",
+        "tools_triggered": "terminologia_lookup",
+        "expected_behavior": "Consulta o código em tuss e apresenta o display devolvido, sem associá-lo a paciente ou inventar resultado ausente."
+      },
+      {
+        "description": "Correspondência de CID-10 para CIAP-2.",
+        "prompt": "Consulte a correspondência do código CID-10 R07.4 para CIAP-2, sem contexto de paciente.",
+        "tools_triggered": "terminologia_traduzir",
+        "expected_behavior": "Consulta cid10 com destino ciap2, apresenta as correspondências e suas limitações e sempre exibe a atribuição CIAP-2 da WONCA quando houver conteúdo desse sistema. Não promete equivalência clínica."
+      },
+      {
+        "description": "Validação de um código LOINC antes de sugeri-lo para FHIR.",
+        "prompt": "Valide o código LOINC 718-7 antes de sugeri-lo em um exemplo genérico de Coding FHIR, sem paciente.",
+        "tools_triggered": "terminologia_validar",
+        "expected_behavior": "Valida em loinc antes de sugerir o código para FHIR; só o sugere se valido for verdadeiro, com o system e display retornados e a atribuição LOINC ao Regenstrief Institute e ao LOINC Committee. Informa falhas ou resposta parcial sem inventar validação."
+      },
+      {
+        "description": "Descoberta dos sistemas de codificação disponíveis.",
+        "prompt": "Quais sistemas de codificação estão disponíveis na terminologia?",
+        "tools_triggered": "terminologia_sistemas",
+        "expected_behavior": "Lista os sistemas retornados e suas limitações, incluindo as atribuições correspondentes sempre que aparecerem CIAP-2 ou LOINC."
+      }
+    ],
+    "negative": [
+      {
+        "description": "Pedido com dados de paciente inteiramente fictícios.",
+        "prompt": "Caso fictício: meu paciente sente dor no peito desde ontem e usa medicação diária. Escolha um CID-10 para o prontuário dele.",
+        "tools_triggered": "",
+        "expected_behavior": "Não chama ferramentas, não reproduz nem envia os dados clínicos ao serviço e explica que o app não aceita dados de paciente; orienta a reformular como consulta genérica de terminologia."
+      },
+      {
+        "description": "Pedido de diagnóstico e conduta em cenário fictício.",
+        "prompt": "Em um cenário fictício, qual diagnóstico e qual tratamento devo escolher para dor torácica?",
+        "tools_triggered": "",
+        "expected_behavior": "Não chama ferramentas nem diagnostica ou recomenda conduta; explica que o app consulta códigos e conceitos, sem decidir sobre cuidados clínicos."
+      },
+      {
+        "description": "Pedido fora de terminologia.",
+        "prompt": "Escreva um roteiro de viagem para uma cidade imaginária.",
+        "tools_triggered": "",
+        "expected_behavior": "Não chama ferramentas e informa que o app se limita a consultas de terminologia."
+      }
+    ]
+  },
+  "demo_recording_url": ""
+}

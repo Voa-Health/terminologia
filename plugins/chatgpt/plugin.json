@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "terminologia",
+  "version": "0.2.0",
+  "description": "Busque, consulte, valide e traduza códigos de terminologias de saúde, sem dados de paciente.",
+  "author": {"name": "Voa Health", "url": "https://voa.health"},
+  "homepage": "https://docs.voa.health/integracao/terminologia",
+  "repository": "https://github.com/Voa-Health/terminologia",
+  "license": "Apache-2.0",
+  "keywords": ["terminologia", "CID-10", "TUSS", "SIGTAP", "FHIR"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "terminologia",
+        "shortDescription": "Consulta e validação de códigos de saúde",
+        "developerName": "Voa Health",
+        "category": "Developer tools",
+        "websiteURL": "https://docs.voa.health/integracao/terminologia",
+        "defaultPrompt": "Busque, consulte, valide e traduza códigos de terminologias de saúde. Consulte apenas conceitos e códigos, sem dados de paciente, diagnóstico ou conduta clínica."
+      }
+    }
+  }
+}
