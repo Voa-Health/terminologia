@@ -8,7 +8,6 @@ import pytest
 
 from terminologia import __version__
 from terminologia._mcp import TOOLS
-from terminologia._sistemas import SISTEMAS
 
 PACKAGE = Path(__file__).resolve().parents[1] / "plugins" / "chatgpt"
 MANIFEST = json.loads((PACKAGE / "plugin.json").read_text())
@@ -57,7 +56,14 @@ def test_remote_mcp_contract():
 def test_openai_listing_metadata():
     interface = OPENAI_EXTENSION["interface"]
     translation = OPENAI_EXTENSION["publication"]["translations"]["pt-BR"]
-    systems = ", ".join(system.rotulo for system in SISTEMAS)
+    systems = (
+        "CID-10, CIAP-2, TUSS, SIGTAP, ANVISA, CBO, CFM specialties, ANS Rol, CNES, LOINC, "
+        "UCUM and TISS domain tables"
+    )
+    systems_pt = (
+        "CID-10, CIAP-2, TUSS, SIGTAP, ANVISA, CBO, especialidades do CFM, Rol da ANS, CNES, "
+        "LOINC, UCUM e tabelas de domínio TISS"
+    )
     assert interface["displayName"] == "Voa Terminologia"
     assert interface["shortDescription"] == "Brazilian health codes"
     assert interface["shortDescription"].isascii()
@@ -68,7 +74,7 @@ def test_openai_listing_metadata():
         "check a code. Read-only: it does not access or receive patient data and does not suggest "
         "diagnoses or treatment."
     )
-    assert interface["longDescription"].replace(f"({systems})", "(<SYSTEMS>)").isascii()
+    assert interface["longDescription"].isascii()
     assert len(interface["longDescription"]) <= 4000
     assert interface["category"] == "Healthcare"
     assert interface["capabilities"] == []
@@ -95,7 +101,7 @@ def test_openai_listing_metadata():
     assert translation == {
         "subtitle": "Códigos de saúde do Brasil",
         "description": "Busca, consulta, valida e traduz códigos das terminologias de saúde usadas "
-        f"no Brasil ({systems}), no padrão FHIR. Para profissionais de saúde, faturistas e "
+        f"no Brasil ({systems_pt}), no padrão FHIR. Para profissionais de saúde, faturistas e "
         "desenvolvedores que precisam conferir um código. Só leitura: não acessa nem recebe dados "
         "de paciente e não sugere diagnóstico ou conduta.",
     }
