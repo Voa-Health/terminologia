@@ -11,12 +11,27 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "terminologia",
-        "shortDescription": "Consulta e validação de códigos de saúde",
+        "displayName": "Voa Terminologia",
+        "shortDescription": "Códigos de saúde do Brasil",
+        "longDescription": "Busca, consulta, valida e traduz códigos das terminologias de saúde usadas no Brasil (CID-10 — variante brasileira, CIAP-2 — Classificação Internacional de Atenção Primária, TUSS Tabela 22 — procedimentos, TUSS Tabela 18 — diárias, taxas e gases medicinais, TUSS Tabela 19 — materiais e OPME, TUSS Tabela 20 — medicamentos, SIGTAP — procedimentos do SUS, SIGTAP — grupos de procedimento, SIGTAP — subgrupos de procedimento, SIGTAP — serviços especializados, SIGTAP — instrumentos de registro, SIGTAP — tipos de financiamento, SIGTAP — modalidades de atendimento, ANVISA — produtos e apresentações, CBO 2002 — ocupações, CFM — especialidades médicas, Rol de Procedimentos e Eventos em Saúde da ANS, Rol da ANS — diretrizes de utilização (DUT), CNES — estabelecimentos de saúde, ANS — operadoras ativas, LOINC — exames e observações, UCUM — unidades de medida, TISS Tabela 23 — caráter do atendimento, TISS Tabela 25 — código da despesa, TISS Tabela 26 — conselho profissional, TISS Tabela 27 — débitos e créditos, TISS Tabela 28 — dentes, TISS Tabela 29 — diagnóstico por imagem, TISS Tabela 30 — escala de capacidade funcional (ECOG - escala de Zubrod), TISS Tabela 31 — estadiamento do tumor, TISS Tabela 32 — faces do dente, TISS Tabela 33 — finalidade do tratamento, TISS Tabela 34 — forma de pagamento, TISS Tabela 35 — grau de participação, TISS Tabela 36 — indicador de acidente, TISS Tabela 37 — indicador de débito ou crédito, TISS Tabela 38 — mensagens (glosas, negativas e outras), TISS Tabela 39 — motivo de encerramento, TISS Tabela 40 — origem da guia, TISS Tabela 41 — regime de internação, TISS Tabela 42 — regiões da boca, TISS Tabela 43 — sexo, TISS Tabela 44 — situação inicial do dente, TISS Tabela 45 — status da solicitação, TISS Tabela 46 — status do cancelamento, TISS Tabela 47 — status do protocolo, TISS Tabela 48 — técnica utilizada, TISS Tabela 49 — tipo de acomodação, TISS Tabela 50 — tipo de atendimento, TISS Tabela 51 — tipo de atendimento em odontologia, TISS Tabela 52 — tipo de consulta, TISS Tabela 53 — tipo de demonstrativo, TISS Tabela 54 — tipo de guia, TISS Tabela 55 — tipo de faturamento, TISS Tabela 56 — natureza da guia, TISS Tabela 57 — tipo de internação, TISS Tabela 58 — tipo de quimioterapia, TISS Tabela 59 — unidade da federação, TISS Tabela 60 — unidade de medida, TISS Tabela 61 — via de acesso, TISS Tabela 62 — via de administração, TISS Tabela 63 — grupos de procedimentos e itens assistenciais para envio à ANS, TISS Tabela 65 — metástases, TISS Tabela 66 — nódulo, TISS Tabela 67 — tumor, TISS Tabela 68 — categoria de despesa, TISS Tabela 69 — versão do componente de comunicação do padrão, TISS Tabela 70 — forma de envio do padrão, TISS Tabela 71 — tipo de atendimento por operadora intermediária, TISS Tabela 72 — tipo de identificação do beneficiário, TISS Tabela 73 — etapas de autorização, TISS Tabela 74 — motivos de ausência do código de validação, TISS Tabela 75 — cobertura especial, TISS Tabela 76 — regime de atendimento, TISS Tabela 77 — saúde ocupacional, TISS Tabela 78 — tipo de pagamento, TISS Tabela 79 — modelos de remuneração entre operadoras e prestadores, TISS Tabela 80 — formato do documento, TISS Tabela 81 — tipo do documento, TISS Tabela 82 — centro de consumo, TISS Tabela 87 — relação das terminologias unificadas na saúde suplementar, Voa — categoria de serviço), no padrão FHIR. Para profissionais de saúde, faturistas e desenvolvedores que precisam conferir um código. Só leitura: não acessa nem recebe dados de paciente e não sugere diagnóstico ou conduta.",
         "developerName": "Voa Health",
-        "category": "Developer tools",
+        "category": "Healthcare",
+        "capabilities": [],
         "websiteURL": "https://docs.voa.health/integracao/terminologia",
-        "defaultPrompt": "Busque, consulte, valide e traduza códigos de terminologias de saúde. Consulte apenas conceitos e códigos, sem dados de paciente, diagnóstico ou conduta clínica."
+        "supportURL": "https://docs.voa.health/integracao/terminologia",
+        "privacyPolicyURL": "https://app.voa.health/legal/privacidade",
+        "termsOfServiceURL": "https://app.voa.health/legal/termos",
+        "defaultPrompt": [
+          "Busque o código CID-10 de hipertensão essencial.",
+          "Quais terminologias de saúde estão disponíveis?",
+          "Busque a ocupação CBO de médico clínico."
+        ],
+        "brandColor": "#8236FF",
+        "brandColorDark": "#A06AFF",
+        "logo": "./assets/voa-icon.png",
+        "logoDark": "./assets/voa-icon-dark.png",
+        "composerIcon": "./assets/voa-icon.png",
+        "composerIconDark": "./assets/voa-icon-dark.png"
       }
     }
   }

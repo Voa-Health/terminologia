@@ -51,6 +51,44 @@ def test_remote_mcp_contract():
     assert manifest["$schema"] == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 
 
+def test_openai_listing_metadata():
+    manifest = json.loads((PACKAGE / "plugin.json").read_text())
+    interface = manifest["extensions"]["com.openai"]["interface"]
+    assert interface["developerName"] == "Voa Health"
+    assert interface["category"] == "Healthcare"
+    assert interface["capabilities"] == []
+    assert len(interface["displayName"]) <= 30
+    assert len(interface["shortDescription"]) <= 30
+    assert len(interface["longDescription"]) <= 4000
+    assert interface["defaultPrompt"] == [
+        "Busque o código CID-10 de hipertensão essencial.",
+        "Quais terminologias de saúde estão disponíveis?",
+        "Busque a ocupação CBO de médico clínico.",
+    ]
+    assert len(interface["defaultPrompt"]) <= 3
+    assert all(len(prompt) <= 128 for prompt in interface["defaultPrompt"])
+    assert {
+        key: interface[key]
+        for key in ("websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL")
+    } == {
+        "websiteURL": "https://docs.voa.health/integracao/terminologia",
+        "supportURL": "https://docs.voa.health/integracao/terminologia",
+        "privacyPolicyURL": "https://app.voa.health/legal/privacidade",
+        "termsOfServiceURL": "https://app.voa.health/legal/termos",
+    }
+    assert all(
+        interface[key].startswith("https://")
+        for key in ("websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL")
+    )
+    icon_paths = (
+        "logo",
+        "logoDark",
+        "composerIcon",
+        "composerIconDark",
+    )
+    assert all((PACKAGE / interface[key].removeprefix("./")).is_file() for key in icon_paths)
+
+
 @pytest.mark.parametrize("group,count", [("positive", 5), ("negative", 3)])
 def test_review_tool_coverage(group, count):
     assert len(CASES[group]) == count
