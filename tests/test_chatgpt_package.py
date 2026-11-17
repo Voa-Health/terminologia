@@ -8,9 +8,12 @@ import pytest
 
 from terminologia import __version__
 from terminologia._mcp import TOOLS
+from terminologia._sistemas import SISTEMAS
 
 PACKAGE = Path(__file__).resolve().parents[1] / "plugins" / "chatgpt"
-CASES = json.loads((PACKAGE / "review-cases.json").read_text())["test_cases"]
+MANIFEST = json.loads((PACKAGE / "plugin.json").read_text())
+OPENAI_EXTENSION = MANIFEST["extensions"]["com.openai"]
+CASES = OPENAI_EXTENSION["review"]["test_cases"]
 TOOL_NAMES = {tool.name for tool in TOOLS}
 IDENTIFIERS = (
     r"(?<!\d)\d{3}\.?\d{3}\.?\d{3}[- .]?\d{2}(?!\d)",
@@ -19,7 +22,7 @@ IDENTIFIERS = (
 )
 
 
-@pytest.mark.parametrize("path", ["skills/terminologia/SKILL.md", "review-cases.json"])
+@pytest.mark.parametrize("path", ["skills/terminologia/SKILL.md"])
 def test_documented_tools_match_stdio(path):
     text = (PACKAGE / path).read_text()
     assert set(re.findall(r"\bterminologia_[a-z_]+\b", text)) == TOOL_NAMES
@@ -52,14 +55,23 @@ def test_remote_mcp_contract():
 
 
 def test_openai_listing_metadata():
-    manifest = json.loads((PACKAGE / "plugin.json").read_text())
-    interface = manifest["extensions"]["com.openai"]["interface"]
-    assert interface["developerName"] == "Voa Health"
+    interface = OPENAI_EXTENSION["interface"]
+    translation = OPENAI_EXTENSION["publication"]["translations"]["pt-BR"]
+    systems = ", ".join(system.rotulo for system in SISTEMAS)
+    assert interface["displayName"] == "Voa Terminologia"
+    assert interface["shortDescription"] == "Brazilian health codes"
+    assert interface["shortDescription"].isascii()
+    assert len(interface["shortDescription"]) <= 30
+    assert interface["longDescription"] == (
+        "Search, look up, validate and translate codes from the health terminologies used in "
+        f"Brazil ({systems}), in FHIR. For clinicians, billing staff and developers who need to "
+        "check a code. Read-only: it does not access or receive patient data and does not suggest "
+        "diagnoses or treatment."
+    )
+    assert interface["longDescription"].replace(f"({systems})", "(<SYSTEMS>)").isascii()
+    assert len(interface["longDescription"]) <= 4000
     assert interface["category"] == "Healthcare"
     assert interface["capabilities"] == []
-    assert len(interface["displayName"]) <= 30
-    assert len(interface["shortDescription"]) <= 30
-    assert len(interface["longDescription"]) <= 4000
     assert interface["defaultPrompt"] == [
         "Busque o código CID-10 de hipertensão essencial.",
         "Quais terminologias de saúde estão disponíveis?",
@@ -80,13 +92,34 @@ def test_openai_listing_metadata():
         interface[key].startswith("https://")
         for key in ("websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL")
     )
-    icon_paths = (
-        "logo",
-        "logoDark",
-        "composerIcon",
-        "composerIconDark",
+    assert translation == {
+        "subtitle": "Códigos de saúde do Brasil",
+        "description": "Busca, consulta, valida e traduz códigos das terminologias de saúde usadas "
+        f"no Brasil ({systems}), no padrão FHIR. Para profissionais de saúde, faturistas e "
+        "desenvolvedores que precisam conferir um código. Só leitura: não acessa nem recebe dados "
+        "de paciente e não sugere diagnóstico ou conduta.",
+    }
+    assert len(translation["subtitle"]) <= 30
+    assert "\n" not in translation["subtitle"] and "\r" not in translation["subtitle"]
+    assert len(translation["description"]) <= 4000
+    assert all(
+        (PACKAGE / interface[key].removeprefix("./")).is_file()
+        for key in ("logo", "logoDark", "composerIcon", "composerIconDark")
     )
-    assert all((PACKAGE / interface[key].removeprefix("./")).is_file() for key in icon_paths)
+
+
+def test_review_cases_are_packaged():
+    review = OPENAI_EXTENSION["review"]
+    assert set(review) == {"commerce", "test_cases"}
+    assert review["commerce"] is False
+    assert len(CASES["positive"]) == 5
+    assert len(CASES["negative"]) == 3
+    for group, cases in CASES.items():
+        for case in cases:
+            assert set(case) == {"description", "prompt", "tools_triggered", "expected_behavior"}
+            assert case["description"] and case["prompt"] and case["expected_behavior"]
+            if group == "positive":
+                assert case["tools_triggered"]
 
 
 @pytest.mark.parametrize("group,count", [("positive", 5), ("negative", 3)])
