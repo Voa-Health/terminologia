@@ -22,6 +22,7 @@ from terminologia._mcp import _resultado_tool
         (b"\xff", {"Retry-After": "30"}, 30),
         (b"[]", {"Retry-After": "inv\xc3\xa1lido"}, None),
         (b'{"retry_after": "inv\xc3\xa1lido"}', {}, None),
+        (b'{"retry_after": "abc"}', {"Retry-After": "30"}, 30),
     ],
 )
 def test_cota_excedida(monkeypatch, body, headers, retry_after):

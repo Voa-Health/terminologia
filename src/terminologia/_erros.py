@@ -116,12 +116,14 @@ def erro_http(
         )
     if status == 429:
         retry_value = payload.get("retry_after") if isinstance(payload, dict) else None
-        if retry_value is None:
-            retry_value = headers.get("Retry-After")
-        try:
-            retry_after = int(retry_value) if retry_value is not None else None
-        except (TypeError, ValueError):
-            retry_after = None
+        retry_after = None
+        for candidate in (retry_value, headers.get("Retry-After")):
+            try:
+                if candidate is not None:
+                    retry_after = int(candidate)
+                    break
+            except (TypeError, ValueError):
+                continue
         mensagem = f"Cota diária compartilhada da organização excedida. {mensagem}"
         if retry_after is not None:
             mensagem += f" Tente novamente em {retry_after} segundos."
