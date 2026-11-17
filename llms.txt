@@ -13,3 +13,17 @@ Cliente Python e servidor MCP para consultar terminologias de saúde em FHIR.
 
 Ferramentas MCP: `terminologia_buscar`, `terminologia_lookup`,
 `terminologia_validar`, `terminologia_traduzir` e `terminologia_sistemas`.
+
+## Acesso e limites
+
+Chaves `sk_voa_` (organização) e `sk_user_` (membro), com escopo
+`terminology:read`, são criadas em https://tiss-api.voa.health/org e configuradas
+em `TERMINOLOGIA_KEY`. O MCP hospedado https://api.voa.health/mcp/terminology/
+aceita `Authorization: Bearer <chave>` ou OAuth.
+A cota diária por organização é compartilhada entre Terminologia, RNDS e SNCR,
+por chave e OAuth: 1.000 com login, 10.000 para organizações verificadas;
+organizações pessoais Pro/Trial/Ultra não têm limite.
+HTTP 429 inclui `retry_after` quando disponível e link do console;
+`Retry-After` também pode estar no cabeçalho. Quando a cobrança estiver habilitada,
+HTTP 402 traz `error_name: "PAYMENT_REQUIRED"` e `metadata.billing_url`.
+Preços públicos: GET https://api.voa.health/api/v2/product/terminology/pricing/.

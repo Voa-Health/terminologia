@@ -34,6 +34,10 @@ class AcessoNegadoError(TerminologiaError):
     """A chave não tem acesso ao recurso."""
 
 
+class PagamentoNecessarioError(TerminologiaError):
+    """O acesso requer pagamento pelo console."""
+
+
 class CotaExcedidaError(TerminologiaError):
     """A cota de consultas foi excedida."""
 
@@ -101,12 +105,27 @@ def erro_http(
         return ChaveInvalidaError(mensagem, status=status, codigo=codigo)
     if status == 403:
         return AcessoNegadoError(mensagem, status=status, codigo=codigo)
+    if status == 402:
+        metadata = payload.get("metadata") if isinstance(payload, dict) else None
+        billing_url = metadata.get("billing_url") if isinstance(metadata, dict) else None
+        url = billing_url if isinstance(billing_url, str) and billing_url else URL_CHAVES
+        return PagamentoNecessarioError(
+            f"Pagamento necessário para acessar o serviço. Confira em {url}.",
+            status=status,
+            codigo=codigo,
+        )
     if status == 429:
-        retry_header = headers.get("Retry-After")
+        retry_value = payload.get("retry_after") if isinstance(payload, dict) else None
+        if retry_value is None:
+            retry_value = headers.get("Retry-After")
         try:
-            retry_after = int(retry_header) if retry_header is not None else None
+            retry_after = int(retry_value) if retry_value is not None else None
         except (TypeError, ValueError):
             retry_after = None
+        mensagem = f"Cota diária compartilhada da organização excedida. {mensagem}"
+        if retry_after is not None:
+            mensagem += f" Tente novamente em {retry_after} segundos."
+        mensagem += f" Confira os limites em {URL_CHAVES}."
         return CotaExcedidaError(
             mensagem,
             retry_after=retry_after,
