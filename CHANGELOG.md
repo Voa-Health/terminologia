@@ -1,5 +1,11 @@
 # Registro de alterações
 
+## Não lançado
+
+- Mensagens de cota diária (`429`) incluem o tempo de espera disponível e o console.
+- `PagamentoNecessarioError` identifica HTTP `402`, com link de pagamento ou do console.
+- Documentação de chaves, OAuth, cotas compartilhadas e consulta de preços públicos.
+
 ## 0.2.0
 
 - O endpoint padrão passa a ser `https://terminologia.voa.health/api/v2/terminology/fhir`.

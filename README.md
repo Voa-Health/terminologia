@@ -71,6 +71,24 @@ if consulta:
 Cada conceito traz `system`, `code`, `display` e `version`, prontos para um
 `Coding` FHIR. Requer Python 3.10+.
 
+## Acesso e limites
+
+Use uma chave de organização (`sk_voa_`) ou de membro (`sk_user_`), com escopo
+`terminology:read`, criada no [console](https://tiss-api.voa.health/org).
+Configure-a em `TERMINOLOGIA_KEY`. O MCP hospedado em
+`https://api.voa.health/mcp/terminology/` aceita `Authorization: Bearer <chave>`
+ou OAuth.
+
+A cota diária por organização é compartilhada entre Terminologia, RNDS e SNCR,
+por chave e OAuth: 1.000 consultas com login, 10.000 para organizações
+verificadas; organizações pessoais Pro/Trial/Ultra não têm limite.
+Ao exceder a cota, HTTP `429` informa `retry_after` quando disponível e um link
+para o console (o cabeçalho `Retry-After` também pode estar presente).
+Quando a cobrança estiver habilitada, HTTP `402` traz
+`error_name: "PAYMENT_REQUIRED"` e `metadata.billing_url` para pagamento.
+Consulte os preços públicos via
+[`GET /api/v2/product/terminology/pricing/`](https://api.voa.health/api/v2/product/terminology/pricing/).
+
 ## CLI
 
 Execute sem instalar com `uvx terminologia buscar cid10 "dor torácica"`.
@@ -170,7 +188,7 @@ disponibilidade no diretório.
 
 | Variável | Uso |
 | --- | --- |
-| `TERMINOLOGIA_KEY` | Chave `sk_voa_` da organização; chaves `sk_tiss_` com o escopo `terminology:read` também valem. |
+| `TERMINOLOGIA_KEY` | Chave `sk_voa_` da organização ou `sk_user_` de membro, com escopo `terminology:read`; chaves `sk_tiss_` com esse escopo também valem. |
 | `TERMINOLOGIA_URL` | Endpoint FHIR; o padrão é `https://terminologia.voa.health/api/v2/terminology/fhir`. |
 
 Os argumentos `api_key` e `base_url` de `Terminologia` têm precedência sobre as
@@ -340,6 +358,7 @@ Todas as exceções herdam de `TerminologiaError`, que traz `status`, `codigo` e
 | `ChaveInvalidaError` | Chave ausente ou inválida (`401`). |
 | `AcessoNegadoError` | A chave não tem acesso ao sistema (`403`). |
 | `CotaExcedidaError` | Cota excedida (`429`); consulte `retry_after`. |
+| `PagamentoNecessarioError` | Pagamento necessário (`402`); a mensagem inclui o link de pagamento ou do console. |
 | `RedeError` | Falha de conexão. |
 | `TempoEsgotadoError` | Tempo limite excedido. |
 | `ServidorError` | Erro retornado pelo serviço. |
