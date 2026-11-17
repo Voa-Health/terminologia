@@ -26,7 +26,10 @@ def test_documented_tools_match_stdio(path):
 
 
 def test_remote_mcp_contract():
-    servers = json.loads((PACKAGE / "mcp.json").read_text())["mcpServers"]
+    mcp_config = json.loads((PACKAGE / "mcp.json").read_text())
+    assert list(mcp_config) == ["$schema", "mcpServers"]
+    assert mcp_config["$schema"] == "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
+    servers = mcp_config["mcpServers"]
     assert servers == {
         "terminologia": {
             "type": "streamable-http",
