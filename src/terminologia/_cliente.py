@@ -92,8 +92,7 @@ class Terminologia:
         key = self.api_key or os.environ.get("TERMINOLOGIA_KEY")
         if not key:
             raise ChaveInvalidaError(
-                "Defina TERMINOLOGIA_KEY com a chave da organização em "
-                "https://tiss-api.voa.health/org.",
+                "Defina TERMINOLOGIA_KEY com a chave da organização em https://console.voa.health.",
                 status=401,
             )
         return key

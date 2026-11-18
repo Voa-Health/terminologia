@@ -22,7 +22,7 @@
 
 <div align="center">
   <a href="https://docs.voa.health/integracao/terminologia">Documentação</a> ·
-  <a href="https://tiss-api.voa.health/org">Chaves</a> ·
+  <a href="https://console.voa.health">Chaves</a> ·
   <a href="https://registry.modelcontextprotocol.io/v0/servers?search=health.voa/terminologia">MCP Registry</a> ·
   <a href="https://github.com/Voa-Health/tiss">tiss</a>
 </div>
@@ -48,7 +48,7 @@ pip install terminologia
 ```
 
 Crie a chave `sk_voa_` da organização no
-[painel da organização](https://tiss-api.voa.health/org) e configure:
+[painel da organização](https://console.voa.health) e configure:
 
 ```sh
 export TERMINOLOGIA_KEY=sk_voa_...
@@ -74,7 +74,7 @@ Cada conceito traz `system`, `code`, `display` e `version`, prontos para um
 ## Acesso e limites
 
 Use uma chave de organização (`sk_voa_`) ou de membro (`sk_user_`), com escopo
-`terminology:read`, criada no [console](https://tiss-api.voa.health/org).
+`terminology:read`, criada no [console](https://console.voa.health).
 Configure-a em `TERMINOLOGIA_KEY`. O MCP hospedado em
 `https://api.voa.health/mcp/terminology/` aceita `Authorization: Bearer <chave>`
 ou OAuth.

@@ -3,7 +3,7 @@
 Cliente Python e servidor MCP para consultar terminologias de saúde em FHIR.
 
 - Instalação: `pip install terminologia`
-- Chave: `TERMINOLOGIA_KEY`, criada em https://tiss-api.voa.health/org
+- Chave: `TERMINOLOGIA_KEY`, criada em https://console.voa.health
 - API FHIR: https://terminologia.voa.health/api/v2/terminology/fhir (`TERMINOLOGIA_URL` substitui o endpoint)
 - [README](README.md)
 - [Início rápido](README.md#início-rápido)
@@ -17,7 +17,7 @@ Ferramentas MCP: `terminologia_buscar`, `terminologia_lookup`,
 ## Acesso e limites
 
 Chaves `sk_voa_` (organização) e `sk_user_` (membro), com escopo
-`terminology:read`, são criadas em https://tiss-api.voa.health/org e configuradas
+`terminology:read`, são criadas em https://console.voa.health e configuradas
 em `TERMINOLOGIA_KEY`. O MCP hospedado https://api.voa.health/mcp/terminology/
 aceita `Authorization: Bearer <chave>` ou OAuth.
 A cota diária por organização é compartilhada entre Terminologia, RNDS e SNCR,
