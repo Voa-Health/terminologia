@@ -31,7 +31,7 @@ def test_tool_mcp_retorna_erro_com_link_de_chaves(monkeypatch):
         {"sistema": "tuss", "codigo": "10101012"},
     )
     assert result.model_dump(by_alias=True)["isError"]
-    assert "https://tiss-api.voa.health/org" in result.content[0].text
+    assert "https://console.voa.health" in result.content[0].text
 
 
 def test_tool_sistemas_responde_com_json():

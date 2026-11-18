@@ -446,7 +446,7 @@ def test_erros_http(servidor, case):
     assert message in exc.value.mensagem
     assert exc.value.codigo == code
     if status in {401, 403}:
-        assert "https://tiss-api.voa.health/org" in exc.value.mensagem
+        assert "https://console.voa.health" in exc.value.mensagem
     if status == 429:
         assert exc.value.retry_after == 30
 

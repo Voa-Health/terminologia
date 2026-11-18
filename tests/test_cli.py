@@ -76,7 +76,7 @@ def test_cli_exit_codes_e_erros(servidor, capsys):
             "corpo": {"error_code": "invalid_credential", "detail": "Chave inválida"},
         }
         assert main(["buscar", "cid10", "x"]) == 2
-        assert "https://tiss-api.voa.health/org" in capsys.readouterr().err
+        assert "https://console.voa.health" in capsys.readouterr().err
     finally:
         cliente_modulo._reset_padrao()
 

@@ -7,7 +7,7 @@ import socket
 import urllib.error
 from typing import Any
 
-URL_CHAVES = "https://tiss-api.voa.health/org"
+URL_CHAVES = "https://console.voa.health"
 
 
 class TerminologiaError(Exception):

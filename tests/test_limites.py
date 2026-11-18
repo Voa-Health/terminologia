@@ -36,7 +36,7 @@ def test_cota_excedida(monkeypatch, body, headers, retry_after):
     assert erro.value.status == 429
     assert erro.value.retry_after == retry_after
     assert "Cota diária compartilhada" in str(erro.value)
-    assert "https://tiss-api.voa.health/org" in str(erro.value)
+    assert "https://console.voa.health" in str(erro.value)
     if retry_after is not None:
         assert f"{retry_after} segundos" in str(erro.value)
 
@@ -48,11 +48,11 @@ def test_cota_excedida(monkeypatch, body, headers, retry_after):
             {"metadata": {"billing_url": "https://example.org/billing"}},
             "https://example.org/billing",
         ),
-        ({}, "https://tiss-api.voa.health/org"),
-        ({"metadata": None}, "https://tiss-api.voa.health/org"),
-        ({"metadata": {"billing_url": ""}}, "https://tiss-api.voa.health/org"),
-        ({"metadata": {"billing_url": 42}}, "https://tiss-api.voa.health/org"),
-        (None, "https://tiss-api.voa.health/org"),
+        ({}, "https://console.voa.health"),
+        ({"metadata": None}, "https://console.voa.health"),
+        ({"metadata": {"billing_url": ""}}, "https://console.voa.health"),
+        ({"metadata": {"billing_url": 42}}, "https://console.voa.health"),
+        (None, "https://console.voa.health"),
     ],
 )
 def test_pagamento_necessario(monkeypatch, payload, url):
@@ -83,7 +83,7 @@ def test_cli_e_mcp_exibem_link_de_acesso(monkeypatch, capsys, status):
         cliente_modulo._CACHE_PADRAO, "cliente", Terminologia(api_key="sk_voa_sintetica")
     )
     assert main(["lookup", "tuss", "X1"]) == 2
-    assert "https://tiss-api.voa.health/org" in capsys.readouterr().err
+    assert "https://console.voa.health" in capsys.readouterr().err
     result = _resultado_tool("terminologia_lookup", {"sistema": "tuss", "codigo": "X1"})
     assert result.model_dump(by_alias=True)["isError"]
-    assert "https://tiss-api.voa.health/org" in result.content[0].text
+    assert "https://console.voa.health" in result.content[0].text
